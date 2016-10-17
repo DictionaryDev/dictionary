@@ -1,15 +1,15 @@
 /*
-**Filename: Dictionnary
+**Filename: main1.c
 **
 **Made by : Fairfort Yohan
 **
-**Description : 
+**Description : main de test de gestbib.c
 **
 */
-#include <time.h>
+
 #include <stdio.h>
 #include <stdlib.h>
-#include "./Dictionnary.h"
+#include "./gestbib.h"
 
 int main(int argCount, char* argList[])
 {
