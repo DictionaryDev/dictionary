@@ -8,7 +8,8 @@
 */
 #include <stdio.h>
 #include <stdlib.h>
-#include "./gestbib.h"
+#include <memory.h>
+#include "gestbib.h"
 
 void createDictionnary(char* filename, char** listOfWords, int sizeOfListOfWords) {
 	FILE* f = fopen(filename, "w");//on doit choisir une extension pour le dictionnaire
@@ -30,7 +31,7 @@ void useExistingDictionnary(char* filename) {
 }
 
 void createDictionnaryFromTxt(char* fileTxtName) {
-	FILE* f = fopen(filename, "r");
+	FILE* f = fopen(fileTxtName, "r");
 
 	if(f != NULL) {
 		char** allUniqWordFromTxt; //récupérer tous les mots unique du dictionnaire
@@ -42,7 +43,7 @@ void createDictionnaryFromTxt(char* fileTxtName) {
 }
 
 void destroyDictionnary(char* filename) {
-	File* f = fopen(filename, "w+");
+	FILE * f = fopen(filename, "w+");
 	if(f != NULL) {
 		fputs(f, "");//delete le tout normalement;
 	}

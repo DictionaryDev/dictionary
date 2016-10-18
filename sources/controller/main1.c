@@ -9,7 +9,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "./gestbib.h"
+#include "gestbib.h"
 
 int main(int argCount, char* argList[])
 {
