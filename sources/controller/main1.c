@@ -10,10 +10,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "gestbib.h"
+#include "cmdLineParser.h"
 
-int main(int argCount, char* argList[])
-{
-
+int main(int argCount, char* argList[]) {
+    parseCMDLine(argCount, argList);
 	return 0;
 };
 

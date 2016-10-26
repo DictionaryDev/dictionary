@@ -10,24 +10,30 @@
 #include <stdlib.h>
 #include <memory.h>
 #include "gestbib.h"
+#include <unistd.h>
+#include <stdbool.h>
 
-void createDictionnary(char* filename, char** listOfWords, int sizeOfListOfWords) {
-	FILE* f = fopen(filename, "w");//on doit choisir une extension pour le dictionnaire
-
-	int i;
-	for(i = 0; i < sizeOfListOfWords; i++) {
-		fprintf(f, "%s\n",listOfWords[i] );
-	}
-	fclose(f);
-}
-
-void useExistingDictionnary(char* filename) {
-	FILE* f = fopen(filename, "r");
-
-	if(f != NULL) {
-		//je ne comprend pas exactement ce qu'il veux dire par le fait d'utiliser.
-	}
-	fclose(f);
+bool createDictionary(char* filename) {
+    if( access( filename, F_OK ) != -1 ) {
+        // file exists
+        char confirm = '0';
+        do {
+           confirm =  scanf("File already exist. Erase it? (y/n)");
+        } while (confirm != 'y' && confirm != 'n');
+        if (confirm == 'y') {
+            FILE * file = fopen(filename, "w");
+            fputs("/***** Dictionary *****/", file);
+            fclose(file);
+            return true;
+        } else {
+            return false;
+        }
+    } else {
+        FILE * file = fopen(filename, "w");
+        fputs("/***** Dictionary *****/", file);
+        fclose(file);
+        return true;
+    }
 }
 
 void createDictionnaryFromTxt(char* fileTxtName) {
@@ -37,22 +43,29 @@ void createDictionnaryFromTxt(char* fileTxtName) {
 		char** allUniqWordFromTxt; //récupérer tous les mots unique du dictionnaire
 		int sizeOfallUniqWordFromTxt;
 		char* newDictionnaryTitle = "";// setter un nom par rapport au dictionnaire?
-		createDictionnary(newDictionnaryTitle, allUniqWordFromTxt, sizeOfallUniqWordFromTxt);
+		createDictionary(newDictionnaryTitle);
 	}
 	fclose(f);
 }
 
-void destroyDictionnary(char* filename) {
-	FILE * f = fopen(filename, "w+");
-	if(f != NULL) {
-		fputs(f, "");//delete le tout normalement;
+bool isADictionary(char * filename) {
+    //Tester si la chaine de caractere ligne 1 est presente
+    FILE * file = fopen(filename, "r");
+    fclose(file);
+    return true;
+}
+
+void destroyDictionary(char* filename) {
+	FILE * file = fopen(filename, "w+");
+	if(file != NULL || isADictionary(filename)) {
+        remove(filename);
 	}
-	fclose(f);
+	fclose(file);
 }
 
 void insertWordIntoDictionnary(char* filename, char* word) {
 	FILE* f = fopen(filename, "a");
-	if(f != NULL) {
+	if(f != NULL || isADictionary(filename)) {
 		fprintf(f, "%s\n", word);
 	}
 	fclose(f);

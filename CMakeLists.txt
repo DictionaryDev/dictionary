@@ -1,0 +1,5 @@
+cmake_minimum_required(VERSION 3.5)
+project(dictionary)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+set(SOURCE_FILES sources/controller/main1.c sources/controller/cmdLineParser.c)
+add_executable(dictionary ${SOURCE_FILES})
