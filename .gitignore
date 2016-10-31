@@ -33,3 +33,7 @@
 *.su
 makefile
 \.idea/
+CMakeFiles/*
+*.cmake
+CMakeCache.txt
+CmakeLists.txt

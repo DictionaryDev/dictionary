@@ -13,6 +13,8 @@
 #include <unistd.h>
 #include <stdbool.h>
 
+char** getUniqWordFromTxt(FILE* file,int* sizeOfTable);
+char** getAllWordFromTxt(FILE* text, int* sizeOfAllWord);
 
 
 Dictionary newDictionary() {
@@ -58,12 +60,14 @@ Dictionary createDictionaryFromTxt(char* fileTxtName) {
     if(file == NULL) {
         fclose(file);
         printf("Text file not found or unreachable!");
-        return NULL;
+        return newDictionary();
 	}
     Dictionary dictionary = newDictionary();
     char ** listOfUniqueWord;
-    //TODO Fonction qui fait la liste des mots uniques. NOTE: retourner la taille de la liste
-    dictionary.length = /* Taille de la liste */;
+    int sizeOflistOfUniqueWord;
+     
+    listOfUniqueWord = getUniqWordFromTxt(file, &sizeOflistOfUniqueWord); //TODO Fonction qui fait la liste des mots uniques. NOTE: retourner la taille de la liste
+    dictionary.length = sizeOflistOfUniqueWord; /* Taille de la liste */
     dictionary.lengthPerLine = malloc(dictionary.length * sizeof(int));
     dictionary.fileContent = malloc(dictionary.length * sizeof(char *));
     for (int idx = 0; idx < dictionary.length; idx ++) {
@@ -133,6 +137,67 @@ int searchWord(char* filename, char* word) {
 	return isItInDictionnary;
 }
 
+char** getUniqWordFromTxt(FILE* file,int* sizeOfTable){
+	int sizeOfAllWordFromText;
+	int* ptrSizeOfAllWordFromText = &sizeOfAllWordFromText;
+	char** allWordsFromText = getAllWordFromTxt(file,ptrSizeOfAllWordFromText);
+	char** uniqWords = malloc(sizeof(char*) * sizeOfAllWordFromText);
+	uniqWords[0] = allWordsFromText[0];
+	int sizeUniqWords = 1;
+	int i,j;
+
+	for(i = 1; i < sizeOfAllWordFromText; i++){//on le fait crue d'abord
+		int flag = 0;
+		for(j = 0; j < sizeUniqWords; j++){
+			if(strcmp(allWordsFromText[i],uniqWords[j]) == 0)
+			{
+				flag = 1;
+				break;
+			}
+		}
+		if(flag == 0)
+		{
+			uniqWords[sizeUniqWords - 1] = allWordsFromText[i];
+			sizeUniqWords++;
+		}
+	}
+
+	*sizeOfTable = sizeUniqWords;
+	return uniqWords;
+}
+
+char** getAllWordFromTxt(FILE* text, int* sizeOfAllWord){
+	int bufferOfWord = 64;//tailleMaximalDeChaqueMot
+	char** allWord = malloc(sizeof(char*) * bufferOfWord);
+	int counterAllWords = 0;
+	int counterBuffer = 0;
+
+	char bufferOfText[10000];
+	//sauveguarder tout le text dans le buffer
+	char space = ' ';
+	int counterText;//Le compteur du texte
+	int counterThisWord;//le compteur du nouveau mot
+	for(counterText = 0; bufferOfText[counterText] == '\0'; counterText++)//tant qu'on a pas fini de lire le tableau
+	{
+		char* thisWord[bufferOfWord];
+		if(bufferOfText[counterText] == space)
+		{
+			thisWord[counterThisWord] = '\0';
+			counterThisWord = 0;
+			allWord[counterAllWords] = thisWord;
+			counterAllWords++;
+		}
+		else
+		{
+			thisWord[counterThisWord] = bufferOfText[counterText];
+			counterThisWord++;
+		}
+	}
+
+	*sizeOfAllWord = counterAllWords;
+	return allWord;
+
+}
 void printDictionary(Dictionary dictionary) {
     printf("Number of words: %d\n", dictionary.length);
     for (int idx = 0; idx < dictionary.length; ++idx) {
