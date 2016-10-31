@@ -15,7 +15,7 @@
 
 char** getUniqWordFromTxt(FILE* file,int* sizeOfTable);
 char** getAllWordFromTxt(FILE* text, int* sizeOfAllWord);
-
+int getSizeOfThisFile(FILE* file);
 
 Dictionary newDictionary() {
     Dictionary dico = {0, {0}, ""};
@@ -146,7 +146,7 @@ char** getUniqWordFromTxt(FILE* file,int* sizeOfTable){
 	int sizeUniqWords = 1;
 	int i,j;
 
-	for(i = 1; i < sizeOfAllWordFromText; i++){//on le fait crue d'abord
+	for(i = 1; i < sizeOfAllWordFromText; i++){
 		int flag = 0;
 		for(j = 0; j < sizeUniqWords; j++){
 			if(strcmp(allWordsFromText[i],uniqWords[j]) == 0)
@@ -172,12 +172,14 @@ char** getAllWordFromTxt(FILE* text, int* sizeOfAllWord){
 	int counterAllWords = 0;
 	int counterBuffer = 0;
 
-	char bufferOfText[10000];
-	//sauveguarder tout le text dans le buffer
+	int sizeOfFile = getSizeOfThisFile(text);
+	char bufferOfText[sizeOfFile];
+	fgets(bufferOfText, sizeOfFile, text);
+
 	char space = ' ';
-	int counterText;//Le compteur du texte
-	int counterThisWord;//le compteur du nouveau mot
-	for(counterText = 0; bufferOfText[counterText] == '\0'; counterText++)//tant qu'on a pas fini de lire le tableau
+	int counterText;
+	int counterThisWord;
+	for(counterText = 0; counterText < sizeOfFile; counterText++)
 	{
 		char* thisWord[bufferOfWord];
 		if(bufferOfText[counterText] == space)
@@ -198,6 +200,16 @@ char** getAllWordFromTxt(FILE* text, int* sizeOfAllWord){
 	return allWord;
 
 }
+
+int getSizeOfThisFile(FILE* file){
+	int resultat;
+	fseek(file, 0, SEEK_END);	
+	resultat = ftell(file) + 1;
+	rewind(file);
+
+	return resultat;
+}
+
 void printDictionary(Dictionary dictionary) {
     printf("Number of words: %d\n", dictionary.length);
     for (int idx = 0; idx < dictionary.length; ++idx) {
