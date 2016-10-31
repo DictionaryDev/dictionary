@@ -1,17 +1,24 @@
 #include <stdbool.h>
 
+#define DICTIONARY_HEADER "/***** Dictionary *****/"
+
+typedef struct Dictionary Dictionary;
+struct Dictionary {
+    int length;
+    int * lengthPerLine;
+    char ** fileContent;
+};
+
 /**
  * Function which aime to create a dictionary.
  * @param filename The file which will be created
- * @param listOfWords The list of words which the dictionary representated by its @param filename will contain.
- * @param sizeOfListOfWords The size of the given @param listOfWords
  */
-bool createDictionary(char* filename);
+bool createDictionary(char *filename);
 /**
  * Function which aim to create a dictionary from a text file
  * @param fileTxtName The text file which will be used to create a dictionary
  */
-void createDictionnaryFromTxt(char* fileTxtName);
+Dictionary createDictionaryFromTxt(char* fileTxtName);
 /**
  * Function wich aim to destroy the dictionary representated by its @param filename
  * @param filename The filename which represent the dictionary
@@ -30,3 +37,9 @@ void insertWordIntoDictionnary(char* filename, char* word);
  * @return 0 if the word doesn't exist, 1 if the word exist
  */
 int searchWord(char* filename, char* word);
+
+Dictionary newDictionary();
+
+void writeDictionary(char * path, Dictionary content);
+
+void printDictionary(Dictionary);

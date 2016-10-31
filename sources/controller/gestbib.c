@@ -13,7 +13,14 @@
 #include <unistd.h>
 #include <stdbool.h>
 
-bool createDictionary(char* filename) {
+
+
+Dictionary newDictionary() {
+    Dictionary dico = {0, {0}, ""};
+    return dico;
+}
+
+bool createDictionary(char *filename) {
     if( access( filename, F_OK ) != -1 ) {
         // file exists
         char confirm = '0';
@@ -22,7 +29,7 @@ bool createDictionary(char* filename) {
         } while (confirm != 'y' && confirm != 'n');
         if (confirm == 'y') {
             FILE * file = fopen(filename, "w");
-            fputs("/***** Dictionary *****/", file);
+            fputs("/***** Dictionary *****/\n", file);
             fclose(file);
             return true;
         } else {
@@ -30,29 +37,55 @@ bool createDictionary(char* filename) {
         }
     } else {
         FILE * file = fopen(filename, "w");
-        fputs("/***** Dictionary *****/", file);
+        fputs("/***** Dictionary *****/\n", file);
         fclose(file);
         return true;
     }
 }
 
-void createDictionnaryFromTxt(char* fileTxtName) {
-	FILE* f = fopen(fileTxtName, "r");
+void writeDictionary(char * path, Dictionary content) {
+    bool isCreated = createDictionary(path);
+    if(!isCreated) {
+        return;
+    }
+    for (int idx = 0; idx < content.length; ++idx) {
+        insertWordIntoDictionnary(path, content.fileContent[idx]);
+    }
+}
 
-	if(f != NULL) {
-		char** allUniqWordFromTxt; //récupérer tous les mots unique du dictionnaire
-		int sizeOfallUniqWordFromTxt;
-		char* newDictionnaryTitle = "";// setter un nom par rapport au dictionnaire?
-		createDictionary(newDictionnaryTitle);
+Dictionary createDictionaryFromTxt(char* fileTxtName) {
+	FILE* file = fopen(fileTxtName, "r");
+    if(file == NULL) {
+        fclose(file);
+        printf("Text file not found or unreachable!");
+        return NULL;
 	}
-	fclose(f);
+    Dictionary dictionary = newDictionary();
+    char ** listOfUniqueWord;
+    //TODO Fonction qui fait la liste des mots uniques. NOTE: retourner la taille de la liste
+    dictionary.length = /* Taille de la liste */;
+    dictionary.lengthPerLine = malloc(dictionary.length * sizeof(int));
+    dictionary.fileContent = malloc(dictionary.length * sizeof(char *));
+    for (int idx = 0; idx < dictionary.length; idx ++) {
+        dictionary.lengthPerLine[idx] = strlen(listOfUniqueWord[idx]);
+        dictionary.fileContent[idx] = malloc(dictionary.lengthPerLine[idx] * sizeof(char));
+    }
+    fclose(file);
+    return dictionary;
 }
 
 bool isADictionary(char * filename) {
     //Tester si la chaine de caractere ligne 1 est presente
     FILE * file = fopen(filename, "r");
-    fclose(file);
-    return true;
+    char ** check = malloc(255 * sizeof(char));
+    fgets(check, 255, file);
+    if (strcmp(check, DICTIONARY_HEADER) == 0) {
+        fclose(file);
+        return true;
+    } else {
+        fclose(file);
+        return false;
+    }
 }
 
 void destroyDictionary(char* filename) {
@@ -64,21 +97,21 @@ void destroyDictionary(char* filename) {
 }
 
 void insertWordIntoDictionnary(char* filename, char* word) {
-	FILE* f = fopen(filename, "a");
-	if(f != NULL || isADictionary(filename)) {
-		fprintf(f, "%s\n", word);
+	FILE* file = fopen(filename, "a");
+	if(file != NULL || isADictionary(filename)) {
+		fprintf(file, "%s\n", word);
 	}
-	fclose(f);
+	fclose(file);
 }
 
 int searchWord(char* filename, char* word) {
-	FILE* f = fopen(filename, "r");
+	FILE* file = fopen(filename, "r");
 	int isItInDictionnary = 0;
 
-	if(f != NULL) {
-		fseek(f, 0, SEEK_END);
-		int sizeFile = ftell(f);
-		rewind(f);
+	if(file != NULL) {
+		fseek(file, 0, SEEK_END);
+		int sizeFile = ftell(file);
+		rewind(file);
 		do {
 			char* thisWordFromDictionnary;
 			fscanf("%s\n", thisWordFromDictionnary);
@@ -86,7 +119,7 @@ int searchWord(char* filename, char* word) {
 				isItInDictionnary = 1;
 				break;
 			}
-		} while(ftell(f) < sizeFile);
+		} while(ftell(file) < sizeFile);
 
 	}
 
@@ -96,6 +129,14 @@ int searchWord(char* filename, char* word) {
 		printf("%s n'est pas dans le dictionnaire\n", word);
 	}
 
-	fclose(f);
+	fclose(file);
 	return isItInDictionnary;
 }
+
+void printDictionary(Dictionary dictionary) {
+    printf("Number of words: %d\n", dictionary.length);
+    for (int idx = 0; idx < dictionary.length; ++idx) {
+        printf("%d(%d): %s\n", idx + 1, dictionary.lengthPerLine[idx], dictionary.fileContent[idx]);
+    }
+}
+
