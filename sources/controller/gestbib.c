@@ -13,9 +13,7 @@
 #include <unistd.h>
 #include <stdbool.h>
 
-char** getUniqWordFromTxt(FILE* file,int* sizeOfTable);
-char** getAllWordFromTxt(FILE* text, int* sizeOfAllWord);
-int getSizeOfThisFile(FILE* file);
+
 
 Dictionary newDictionary() {
     Dictionary dico = {0, {0}, ""};
@@ -99,7 +97,7 @@ bool isADictionary(char * filename) {
 
 void destroyDictionary(char* filename) {
 	FILE * file = fopen(filename, "w+");
-	if(file != NULL || isADictionary(filename)) {
+	if(file != NULL || isADictionary(filename)) {// pourquoi c'est un || ? ce serait pas un &&?
         remove(filename);
 	}
 	fclose(file);
@@ -142,10 +140,10 @@ int searchWord(char* filename, char* word) {
 	return isItInDictionnary;
 }
 
-char** getUniqWordFromTxt(FILE* file,int* sizeOfTable){
+char** getUniqWordFromTxt(FILE* text,int* sizeOfTable){
 	int sizeOfAllWordFromText;
 	int* ptrSizeOfAllWordFromText = &sizeOfAllWordFromText;
-	char** allWordsFromText = getAllWordFromTxt(file,ptrSizeOfAllWordFromText);
+	char** allWordsFromText = getAllWordFromTxt(text,ptrSizeOfAllWordFromText);
 	char** uniqWords = malloc(sizeof(char*) * sizeOfAllWordFromText);
 	uniqWords[0] = allWordsFromText[0];
 	int sizeUniqWords = 1;

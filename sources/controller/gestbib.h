@@ -43,3 +43,7 @@ Dictionary newDictionary();
 void writeDictionary(char * path, Dictionary content);
 
 void printDictionary(Dictionary);
+
+char** getUniqWordFromTxt(FILE* text,int* sizeOfTable);
+char** getAllWordFromTxt(FILE* text, int* sizeOfAllWord);
+int getSizeOfThisFile(FILE* file);
