@@ -33,11 +33,13 @@ void parseCMDLine(int argCount, char * argList[]) {
             searchWord(argList[i + 1], argList[i + 2]);
         }
         //Continuer la serie de if et faire le mode interactif aussi
-        if (strcmp(argList[i], "-o") == 0 && strcmp(argList[i], "--output") == 0) {
+        if (strcmp(argList[i], "-o") == 0 || strcmp(argList[i], "--output") == 0) {
             if(dictionary.length == 0) {
+                printf("Dictionary is empty, creating an empty one at: %s\n", argList[i + 1]);
                 createDictionary(argList[i + 1]);
             } else {
-                writeDictionary(argList[i], dictionary);
+                printf("Writing Dictionary to: %s\n", argList[i + 1]);
+                writeDictionary(argList[i + 1], dictionary);
             }
         } else {
             printDictionary(dictionary);

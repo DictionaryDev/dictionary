@@ -67,6 +67,11 @@ Dictionary createDictionaryFromTxt(char* fileTxtName) {
     int sizeOflistOfUniqueWord;
      
     listOfUniqueWord = getUniqWordFromTxt(file, &sizeOflistOfUniqueWord); //TODO Fonction qui fait la liste des mots uniques. NOTE: retourner la taille de la liste
+    printf("SIZE: %d\n", sizeOflistOfUniqueWord);
+    for (int i = 0; i < sizeOflistOfUniqueWord; ++i) {
+        printf("----> %s\n", listOfUniqueWord[i]);
+    }
+
     dictionary.length = sizeOflistOfUniqueWord; /* Taille de la liste */
     dictionary.lengthPerLine = malloc(dictionary.length * sizeof(int));
     dictionary.fileContent = malloc(dictionary.length * sizeof(char *));
