@@ -24,7 +24,7 @@ void parseCMDLine(int argCount, char * argList[]) {
         } else if (strcmp(argList[i], "create") == 0) {
             createDictionary(argList[i + 1]);
         } else if (strcmp(argList[i], "create-from-txt") == 0) {
-            dictionary = createDictionaryFromTxt(argList[i+1]);
+            createDictionaryFromTxt(argList[i+1]);
         } else if (strcmp(argList[i], "delete") == 0) {
             destroyDictionary(argList[i + 1]);
         } else if (strcmp(argList[i], "insert") == 0) {

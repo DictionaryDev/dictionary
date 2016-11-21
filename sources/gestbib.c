@@ -16,8 +16,12 @@
 
 
 Dictionary newDictionary() {
-    Dictionary dico = {0, {0}, ""};
-    return dico;
+    Dictionary* dico = malloc(sizeof(Dictionary));//{0, {0}, ""};
+    
+    dico->length = 0;
+    dico->lengthPerLine = malloc(sizeof(int) * 100);
+    dico->fileContent = "";
+    return *dico;
 }
 
 bool createDictionary(char *filename) {
@@ -53,32 +57,33 @@ void writeDictionary(char * path, Dictionary content) {
     }
 }
 
-Dictionary createDictionaryFromTxt(char* fileTxtName) {
-	FILE* file = fopen(fileTxtName, "r");
+void createDictionaryFromTxt(char* fileTxtName) {
+	/*FILE* file = fopen(fileTxtName, "r");
     if(file == NULL) {
         fclose(file);
         printf("Text file not found or unreachable!");
         return newDictionary();
 	}
     Dictionary dictionary = newDictionary();
+
     char ** listOfUniqueWord;
     int sizeOflistOfUniqueWord;
-     
-    listOfUniqueWord = getUniqWordFromTxt(file, &sizeOflistOfUniqueWord); //TODO Fonction qui fait la liste des mots uniques. NOTE: retourner la taille de la liste
+    printf("initialise la liste des mots uniques");
+    //listOfUniqueWord = getUniqWordFromTxt(file, &sizeOflistOfUniqueWord); //TODO Fonction qui fait la liste des mots uniques. NOTE: retourner la taille de la liste
     printf("SIZE: %d\n", sizeOflistOfUniqueWord);
     for (int i = 0; i < sizeOflistOfUniqueWord; ++i) {
         printf("----> %s\n", listOfUniqueWord[i]);
     }
-
-    dictionary.length = sizeOflistOfUniqueWord; /* Taille de la liste */
+    
+    dictionary.length = sizeOflistOfUniqueWord; /* Taille de la liste 
     dictionary.lengthPerLine = malloc(dictionary.length * sizeof(int));
     dictionary.fileContent = malloc(dictionary.length * sizeof(char *));
     for (int idx = 0; idx < dictionary.length; idx ++) {
         dictionary.lengthPerLine[idx] = strlen(listOfUniqueWord[idx]);
         dictionary.fileContent[idx] = malloc(dictionary.lengthPerLine[idx] * sizeof(char));
     }
-    fclose(file);
-    return dictionary;
+    fclose(file);*/
+    printf("passe dans cette fonction");
 }
 
 bool isADictionary(char * filename) {
@@ -121,7 +126,7 @@ int searchWord(char* filename, char* word) {
 		rewind(file);
 		do {
 			char* thisWordFromDictionnary;
-			fscanf("%s\n", thisWordFromDictionnary);
+			fscanf(file,"%s\n", thisWordFromDictionnary);
 			if(strcmp(thisWordFromDictionnary, word) == 0) {
 				isItInDictionnary = 1;
 				break;
@@ -141,8 +146,9 @@ int searchWord(char* filename, char* word) {
 }
 
 char** getUniqWordFromTxt(FILE* text,int* sizeOfTable){
-	int sizeOfAllWordFromText;
+	int sizeOfAllWordFromText = 0;
 	int* ptrSizeOfAllWordFromText = &sizeOfAllWordFromText;
+
 	char** allWordsFromText = getAllWordFromTxt(text,ptrSizeOfAllWordFromText);
 	char** uniqWords = malloc(sizeof(char*) * sizeOfAllWordFromText);
 	uniqWords[0] = allWordsFromText[0];
@@ -179,6 +185,7 @@ char** getAllWordFromTxt(FILE* text, int* sizeOfAllWord){
 	char bufferOfText[sizeOfFile];
 	fgets(bufferOfText, sizeOfFile, text);
 
+	printf("%s",bufferOfText);
 	char space = ' ';
 	int counterText;
 	int counterThisWord;
