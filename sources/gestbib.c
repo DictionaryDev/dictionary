@@ -14,36 +14,58 @@
 #include <stdbool.h>
 
 
-
-Dictionary newDictionary() {
-    Dictionary* dico = malloc(sizeof(Dictionary));//{0, {0}, ""};
+//Dictionnaire de 10 000 mots par défaut
+Dictionary* newDictionary() {
+    Dictionary* dico = malloc(sizeof(Dictionary));//{0, {0}, {""}};
     
+    dico->title = "default dictionnary";
     dico->length = 0;
-    dico->lengthPerLine = malloc(sizeof(int) * 100);
-    dico->fileContent = "";
-    return *dico;
+    dico->lengthOfEachWord = malloc(sizeof(int) * 10000);
+    dico->words = malloc(sizeof(char*) * 10000);
+    return dico;
 }
 
-bool createDictionary(char *filename) {
-    if( access( filename, F_OK ) != -1 ) {
+Dictionary* newDictionaryWithTitle(char* title) {
+    Dictionary* dico = malloc(sizeof(Dictionary));//{0, {0}, {""}};
+    
+    dico->title = title;
+    dico->length = 0;
+    dico->lengthOfEachWord = malloc(sizeof(int) * 10000);
+    dico->words = malloc(sizeof(char*) * 10000);
+    return dico;
+}
+
+Dictionary* newDictionaryWithTitleAndMax(char* title, int maxWords)
+{
+	Dictionary* dico = malloc(sizeof(Dictionary));//{0, {0}, {""}};
+    
+    dico->title = title;
+    dico->length = 0;
+    dico->lengthOfEachWord = malloc(sizeof(int) * maxWords);
+    dico->words = malloc(sizeof(char*) * maxWords);
+	return dico;			
+}
+
+Dictionary* createDictionary(char *filePath) {
+    if( access( filePath, F_OK ) != -1 ) {
         // file exists
         char confirm = '0';
         do {
-           confirm =  scanf("File already exist. Erase it? (y/n)");
+           confirm = scanf("File already exist. Erase it? (y/n)");
         } while (confirm != 'y' && confirm != 'n');
         if (confirm == 'y') {
-            FILE * file = fopen(filename, "w");
+            FILE * file = fopen(filePath, "w");
             fputs("/***** Dictionary *****/\n", file);
             fclose(file);
-            return true;
+            return newDictionary();
         } else {
-            return false;
+            return NULL;
         }
     } else {
-        FILE * file = fopen(filename, "w");
+        FILE * file = fopen(filePath, "w");
         fputs("/***** Dictionary *****/\n", file);
         fclose(file);
-        return true;
+        return newDictionary();
     }
 }
 
@@ -53,36 +75,36 @@ void writeDictionary(char * path, Dictionary content) {
         return;
     }
     for (int idx = 0; idx < content.length; ++idx) {
-        insertWordIntoDictionnary(path, content.fileContent[idx]);
+        insertWordIntoDictionnary(path, content.words[idx]);
     }
 }
 
 void createDictionaryFromTxt(char* fileTxtName) {
-	/*FILE* file = fopen(fileTxtName, "r");
+	FILE* file = fopen(fileTxtName, "r");
     if(file == NULL) {
         fclose(file);
         printf("Text file not found or unreachable!");
-        return newDictionary();
+        return ;
 	}
-    Dictionary dictionary = newDictionary();
+    Dictionary* dictionary = newDictionary();
 
     char ** listOfUniqueWord;
     int sizeOflistOfUniqueWord;
     printf("initialise la liste des mots uniques");
-    //listOfUniqueWord = getUniqWordFromTxt(file, &sizeOflistOfUniqueWord); //TODO Fonction qui fait la liste des mots uniques. NOTE: retourner la taille de la liste
-    printf("SIZE: %d\n", sizeOflistOfUniqueWord);
+    listOfUniqueWord = getUniqWordFromTxt(file, &sizeOflistOfUniqueWord); //TODO Fonction qui fait la liste des mots uniques. NOTE: retourner la taille de la liste
+    /*printf("SIZE: %d\n", sizeOflistOfUniqueWord);
     for (int i = 0; i < sizeOflistOfUniqueWord; ++i) {
         printf("----> %s\n", listOfUniqueWord[i]);
     }
     
-    dictionary.length = sizeOflistOfUniqueWord; /* Taille de la liste 
+    dictionary.length = sizeOflistOfUniqueWord; Taille de la liste 
     dictionary.lengthPerLine = malloc(dictionary.length * sizeof(int));
     dictionary.fileContent = malloc(dictionary.length * sizeof(char *));
     for (int idx = 0; idx < dictionary.length; idx ++) {
         dictionary.lengthPerLine[idx] = strlen(listOfUniqueWord[idx]);
         dictionary.fileContent[idx] = malloc(dictionary.lengthPerLine[idx] * sizeof(char));
-    }
-    fclose(file);*/
+    }*/
+    fclose(file);
     printf("passe dans cette fonction");
 }
 
@@ -90,8 +112,8 @@ bool isADictionary(char * filename) {
     //Tester si la chaine de caractere ligne 1 est presente
     FILE * file = fopen(filename, "r");
     char ** check = malloc(255 * sizeof(char));
-    fgets(check, 255, file);
-    if (strcmp(check, DICTIONARY_HEADER) == 0) {
+    fgets(*check, 255, file);
+    if (strcmp(*check, DICTIONARY_HEADER) == 0) {
         fclose(file);
         return true;
     } else {
@@ -100,10 +122,13 @@ bool isADictionary(char * filename) {
     }
 }
 
-void destroyDictionary(char* filename) {
-	FILE * file = fopen(filename, "w+");
-	if(file != NULL || isADictionary(filename)) {// pourquoi c'est un || ? ce serait pas un &&?
-        remove(filename);
+void destroyDictionary(Dictionary* dictionary) {
+	FILE * file = fopen(dictionary->title, "w+");
+	if(file != NULL && isADictionary(dictionary->title)) {
+        remove(dictionary->title);
+        free(dictionary->words);
+        free(dictionary->lengthOfEachWord);
+        free(dictionary);
 	}
 	fclose(file);
 }
@@ -176,7 +201,7 @@ char** getUniqWordFromTxt(FILE* text,int* sizeOfTable){
 }
 
 char** getAllWordFromTxt(FILE* text, int* sizeOfAllWord){
-	int bufferOfWord = 64;//tailleMaximalDeChaqueMot
+	int bufferOfWord = 64;
 	char** allWord = malloc(sizeof(char*) * bufferOfWord);
 	int counterAllWords = 0;
 	int counterBuffer = 0;
@@ -223,7 +248,7 @@ int getSizeOfThisFile(FILE* file){
 void printDictionary(Dictionary dictionary) {
     printf("Number of words: %d\n", dictionary.length);
     for (int idx = 0; idx < dictionary.length; ++idx) {
-        printf("%d(%d): %s\n", idx + 1, dictionary.lengthPerLine[idx], dictionary.fileContent[idx]);
+        printf("%d(%d): %s\n", idx + 1, dictionary.lengthOfEachWord[idx], dictionary.words[idx]);
     }
 }
 

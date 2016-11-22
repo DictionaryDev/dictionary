@@ -4,17 +4,32 @@
 #define DICTIONARY_HEADER "/***** Dictionary *****/"
 
 struct Dictionary {
+
+	char* title;
     int length;
-    int * lengthPerLine;
-    char ** fileContent;
+    int* lengthOfEachWord;
+    char** words;
 };
 typedef struct Dictionary Dictionary;
+/*
+	Constructor of the Dictionnary
+*/
+Dictionary* newDictionary();
+Dictionary* newDictionaryWithTitle(char* title);
+Dictionary* newDictionaryWithTitleAndMax(char* title, int maxWords);
 
 /**
- * Function which aime to create a dictionary.
+ * Function which aime to create a file dictionary.
+ * return a dictionnary with the path as title
  * @param filename The file which will be created
  */
-bool createDictionary(char *filename);
+Dictionary* createDictionary(char *filePath);
+
+/*
+	Check if a file is a dictionnary
+*/
+bool isADictionary(char * filename);
+
 /**
  * Function which aim to create a dictionary from a text file
  * @param fileTxtName The text file which will be used to create a dictionary
@@ -39,7 +54,6 @@ void insertWordIntoDictionnary(char* filename, char* word);
  */
 int searchWord(char* filename, char* word);
 
-Dictionary newDictionary();
 
 void writeDictionary(char * path, Dictionary content);
 
