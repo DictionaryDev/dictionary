@@ -30,6 +30,8 @@ Dictionary* createDictionary(char *filePath);
 */
 bool isADictionary(char * filename);
 
+void writeDictionary(Dictionary* dico,char** wordsToInput,int sizeOfWords);
+
 /**
  * Function which aim to create a dictionary from a text file
  * @param fileTxtName The text file which will be used to create a dictionary
@@ -40,12 +42,7 @@ void createDictionaryFromTxt(char* filePath, char* fileTxtName);
  * @param filename The filename which represent the dictionary
  */
 void destroyDictionary(Dictionary* dico);
-/**
- * Function which aim to insert a word into an existing dictionary representated by its @param filename
- * @param filename The filename which represent the dictionary
- * @param word The word to insert
- */
-void insertWordIntoDictionnary(Dictionary* dico, char* word);
+
 /**
  * Function which aim to search a word into a dictionary representated by its @param filename
  * @param filename The filename which represent the dictionary
@@ -54,8 +51,6 @@ void insertWordIntoDictionnary(Dictionary* dico, char* word);
  */
 int searchWord(char* filename, char* word);
 
-
-void writeDictionary(char * path, Dictionary content);
 
 void printDictionary(Dictionary);
 

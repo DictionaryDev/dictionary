@@ -61,32 +61,94 @@ Dictionary* newDictionaryWithTitleAndMax(char* title, int maxWords)
 	return dico;			
 }
 
+Dictionary* useDictionary(char* title)    //synchroniser les éléments de la structure
+{
+	Dictionary* dico = malloc(sizeof(Dictionary));//{0, {0}, {""}};
+    
+    dico->title = title;
+    dico->length = 0;
+    dico->lengthOfEachWord = malloc(sizeof(int) * 10000);
+    dico->words = malloc(sizeof(char*) * 10000);
+
+	return dico;
+}
 Dictionary* createDictionary(char *filePath) {
+    if( isADictionary(filePath) == true ) {
+        // si c'est un dictionnaire le lire.
         char confirm = '0';
         do {
+           confirm = scanf("dictionary already exist. Erase it? (y/n)");
+        } 
+        while (confirm != 'y' && confirm != 'n');
         if (confirm == 'y') {
+           
+            return newDictionaryWithTitle(filePath);
         } else {
+            return NULL;//renvoyer a l'invite précédent
         }
+    }
+    else
+    {
+    	return newDictionaryWithTitle(filePath);
+    }
+}
+
+bool isADictionary(char * filename) {
+    //Tester si la chaine de caractere ligne 1 est presente
+    FILE * file = fopen(filename, "r");
+    char ** check = malloc(255 * sizeof(char));
+    fgets(*check, 255, file);
+    if (strcmp(*check, DICTIONARY_HEADER) == 0) {
+        fclose(file);
+        return true;
     } else {
         fclose(file);
+        return false;
     }
 }
 
-void writeDictionary(char * path, Dictionary content) {
-    for (int idx = 0; idx < content.length; ++idx) {
-    }
+void destroyDictionary(Dictionary* dictionary) {
+	FILE * file = fopen(dictionary->title, "w+");
+	if(file != NULL && isADictionary(dictionary->title)) {
+        remove(dictionary->title);
+        free(dictionary->words);
+        free(dictionary->lengthOfEachWord);
+        free(dictionary);
+	}
+	fclose(file);
 }
 
+void writeDictionary(Dictionary* dico,char** wordsToInput,int sizeOfWords) {
+   	int i;
+   	FILE* file = fopen(dico->title, "a");
+
+   	for(i = 0; i < sizeOfWords; i++)
+   	{
+   		dico->words[dico->length + i] = wordsToInput[i];
+   		dico->lengthOfEachWord[dico->length + i] = strlen(wordsToInput[i]);
+		fprintf(file, "%s\n", wordsToInput[i]);
+
+   	}
+   	dico->length = dico->length + sizeOfWords;
+
+    fclose(file);
+}
+
+
+void createDictionaryFromTxt(char* filePath, char* fileTxtName) {
 	FILE* file = fopen(fileTxtName, "r");
     if(file == NULL) {
         fclose(file);
         printf("Text file not found or unreachable!");
         return ;
 	}
+    Dictionary* dictionary = newDictionaryWithTitle(filePath);
 
     char ** listOfUniqueWord;
     int sizeOflistOfUniqueWord;
     printf("initialise la liste des mots uniques");
+    listOfUniqueWord = getUniqWordFromTxt(file, &sizeOflistOfUniqueWord); 
+    //TODO Fonction qui fait la liste des mots uniques. NOTE: retourner la taille de la liste
     /*printf("SIZE: %d\n", sizeOflistOfUniqueWord);
     for (int i = 0; i < sizeOflistOfUniqueWord; ++i) {
         printf("----> %s\n", listOfUniqueWord[i]);
@@ -103,10 +165,6 @@ void writeDictionary(char * path, Dictionary content) {
     printf("passe dans cette fonction");
 }
 
-		fprintf(file, "%s\n", word);
-	}
-	fclose(file);
-}
 
 int searchWord(char* filename, char* word) {
 	FILE* file = fopen(filename, "r");
