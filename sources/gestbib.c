@@ -22,6 +22,11 @@ Dictionary* newDictionary() {
     dico->length = 0;
     dico->lengthOfEachWord = malloc(sizeof(int) * 10000);
     dico->words = malloc(sizeof(char*) * 10000);
+
+    FILE * file = fopen(dico->title, "w");
+    fputs("/***** Dictionary *****/\n", file);
+    fclose(file);
+
     return dico;
 }
 
@@ -32,6 +37,11 @@ Dictionary* newDictionaryWithTitle(char* title) {
     dico->length = 0;
     dico->lengthOfEachWord = malloc(sizeof(int) * 10000);
     dico->words = malloc(sizeof(char*) * 10000);
+
+ 	FILE * file = fopen(dico->title, "w");
+    fputs("/***** Dictionary *****/\n", file);
+    fclose(file);
+
     return dico;
 }
 
@@ -43,55 +53,40 @@ Dictionary* newDictionaryWithTitleAndMax(char* title, int maxWords)
     dico->length = 0;
     dico->lengthOfEachWord = malloc(sizeof(int) * maxWords);
     dico->words = malloc(sizeof(char*) * maxWords);
+
+    FILE* file = fopen(dico->title, "w");
+    fputs("/***** Dictionary *****/\n", file);
+    fclose(file);
+
 	return dico;			
 }
 
 Dictionary* createDictionary(char *filePath) {
-    if( access( filePath, F_OK ) != -1 ) {
-        // file exists
         char confirm = '0';
         do {
-           confirm = scanf("File already exist. Erase it? (y/n)");
-        } while (confirm != 'y' && confirm != 'n');
         if (confirm == 'y') {
-            FILE * file = fopen(filePath, "w");
-            fputs("/***** Dictionary *****/\n", file);
-            fclose(file);
-            return newDictionary();
         } else {
-            return NULL;
         }
     } else {
-        FILE * file = fopen(filePath, "w");
-        fputs("/***** Dictionary *****/\n", file);
         fclose(file);
-        return newDictionary();
     }
 }
 
 void writeDictionary(char * path, Dictionary content) {
-    bool isCreated = createDictionary(path);
-    if(!isCreated) {
-        return;
-    }
     for (int idx = 0; idx < content.length; ++idx) {
-        insertWordIntoDictionnary(path, content.words[idx]);
     }
 }
 
-void createDictionaryFromTxt(char* fileTxtName) {
 	FILE* file = fopen(fileTxtName, "r");
     if(file == NULL) {
         fclose(file);
         printf("Text file not found or unreachable!");
         return ;
 	}
-    Dictionary* dictionary = newDictionary();
 
     char ** listOfUniqueWord;
     int sizeOflistOfUniqueWord;
     printf("initialise la liste des mots uniques");
-    listOfUniqueWord = getUniqWordFromTxt(file, &sizeOflistOfUniqueWord); //TODO Fonction qui fait la liste des mots uniques. NOTE: retourner la taille de la liste
     /*printf("SIZE: %d\n", sizeOflistOfUniqueWord);
     for (int i = 0; i < sizeOflistOfUniqueWord; ++i) {
         printf("----> %s\n", listOfUniqueWord[i]);
@@ -108,34 +103,6 @@ void createDictionaryFromTxt(char* fileTxtName) {
     printf("passe dans cette fonction");
 }
 
-bool isADictionary(char * filename) {
-    //Tester si la chaine de caractere ligne 1 est presente
-    FILE * file = fopen(filename, "r");
-    char ** check = malloc(255 * sizeof(char));
-    fgets(*check, 255, file);
-    if (strcmp(*check, DICTIONARY_HEADER) == 0) {
-        fclose(file);
-        return true;
-    } else {
-        fclose(file);
-        return false;
-    }
-}
-
-void destroyDictionary(Dictionary* dictionary) {
-	FILE * file = fopen(dictionary->title, "w+");
-	if(file != NULL && isADictionary(dictionary->title)) {
-        remove(dictionary->title);
-        free(dictionary->words);
-        free(dictionary->lengthOfEachWord);
-        free(dictionary);
-	}
-	fclose(file);
-}
-
-void insertWordIntoDictionnary(char* filename, char* word) {
-	FILE* file = fopen(filename, "a");
-	if(file != NULL || isADictionary(filename)) {
 		fprintf(file, "%s\n", word);
 	}
 	fclose(file);
