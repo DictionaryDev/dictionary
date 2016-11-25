@@ -1,9 +1,9 @@
 /*
 **Filename: gestrech.c
 **
-**Made by : Fairfort Yohan
+**Made by : Fairfort Yohan, Baugue Florian
 **
-**Description : Partie 1 du dictionnary
+**Description : Partie 2 du dictionnary
 **
 */
 #include <stdio.h>
@@ -11,6 +11,7 @@
 #include <memory.h>
 #include <unistd.h>
 #include <stdbool.h>
+#include "gestrech.h"
 /*
 int calculateSeuilBetween(char* this, char* that);
 char** advanceSearch(char* word,char** listOfCommonWord,int sizeOfListOfCommonWord,int* sizeOfSimilarWord,int myMaxSeuil);
@@ -67,8 +68,11 @@ int calculateSeuilBetween(char* this, char* that)
 }
 */
 
-void searchSimilarWords()// programme controle
+void searchSimilarWords(char* wordUse)// programme controle
 {
+    printf("%s", wordUse);
+    char totalList[][] = char[500][100];
+    totalList = downloadListWords();
 
 }
 
@@ -82,7 +86,22 @@ void testSeuilSimilarWords()// trie les mots selon leur seuil de similarité
 
 }
 
-void downloadListWords()// charge la liste des mots dans un ou plusieurs dictionnaire(s)
+char[][] downloadListWords()// charge la liste des mots dans un ou plusieurs dictionnaire(s)
 {
+    char totalList[][] = new char[500][100];
+    totalList = imitationListWords();
+    return totalList;
+}
 
+char[][] imitationListWords()
+{
+    char totalList[][] = new char[500][100];
+    totalList[0] = "trac";
+    totalList[1] = "troc";
+    totalList[2] = "tric";
+    totalList[3] = "tryc";
+    totalList[4] = "tsuc";
+    totalList[5] = "tduc";
+    totalList[6] = "tdac";
+    return totalList;
 }
