@@ -42,6 +42,8 @@ void createDictionaryFromTxt(char* filePath, char* fileTxtName);
  * @param filename The filename which represent the dictionary
  */
 void destroyDictionary(Dictionary* dico);
+Dictionary* useDictionary(char* title);
+void stopUseDictionnary(Dictionary* dictionary);
 
 /**
  * Function which aim to search a word into a dictionary representated by its @param filename

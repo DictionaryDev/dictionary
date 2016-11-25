@@ -17,7 +17,7 @@
 //Dictionnaire de 10 000 mots par défaut
 Dictionary* newDictionary() {
     Dictionary* dico = malloc(sizeof(Dictionary));//{0, {0}, {""}};
-    
+
     dico->title = "default dictionnary";
     dico->length = 0;
     dico->lengthOfEachWord = malloc(sizeof(int) * 10000);
@@ -32,7 +32,7 @@ Dictionary* newDictionary() {
 
 Dictionary* newDictionaryWithTitle(char* title) {
     Dictionary* dico = malloc(sizeof(Dictionary));//{0, {0}, {""}};
-    
+
     dico->title = title;
     dico->length = 0;
     dico->lengthOfEachWord = malloc(sizeof(int) * 10000);
@@ -48,7 +48,7 @@ Dictionary* newDictionaryWithTitle(char* title) {
 Dictionary* newDictionaryWithTitleAndMax(char* title, int maxWords)
 {
 	Dictionary* dico = malloc(sizeof(Dictionary));//{0, {0}, {""}};
-    
+
     dico->title = title;
     dico->length = 0;
     dico->lengthOfEachWord = malloc(sizeof(int) * maxWords);
@@ -58,17 +58,16 @@ Dictionary* newDictionaryWithTitleAndMax(char* title, int maxWords)
     fputs("/***** Dictionary *****/\n", file);
     fclose(file);
 
-	return dico;			
+	return dico;
 }
 
 Dictionary* useDictionary(char* title)    //synchroniser les éléments de la structure
 {
 	Dictionary* dico = malloc(sizeof(Dictionary));//{0, {0}, {""}};
-    
-    dico->title = title;
-    dico->length = 0;
-    dico->lengthOfEachWord = malloc(sizeof(int) * 10000);
-    dico->words = malloc(sizeof(char*) * 10000);
+  dico->title = title;
+  dico->length = 0;
+  dico->lengthOfEachWord = malloc(sizeof(int) * 10000);
+  dico->words = malloc(sizeof(char*) * 10000);
 
 	return dico;
 }
@@ -78,10 +77,10 @@ Dictionary* createDictionary(char *filePath) {
         char confirm = '0';
         do {
            confirm = scanf("dictionary already exist. Erase it? (y/n)");
-        } 
+        }
         while (confirm != 'y' && confirm != 'n');
         if (confirm == 'y') {
-           
+
             return newDictionaryWithTitle(filePath);
         } else {
             return NULL;//renvoyer a l'invite précédent
@@ -106,16 +105,18 @@ bool isADictionary(char * filename) {
         return false;
     }
 }
-
-void destroyDictionary(Dictionary* dictionary) {
-	FILE * file = fopen(dictionary->title, "w+");
+void destroyDictionary(Dictionary* dictionary)
+{
+  FILE * file = fopen(dictionary->title, "w+");
 	if(file != NULL && isADictionary(dictionary->title)) {
         remove(dictionary->title);
-        free(dictionary->words);
-        free(dictionary->lengthOfEachWord);
-        free(dictionary);
-	}
-	fclose(file);
+        stopUseDictionnary(dictionary);
+  }
+}
+void stopUseDictionnary(Dictionary* dictionary) {
+      free(dictionary->words);
+      free(dictionary->lengthOfEachWord);
+      free(dictionary);
 }
 
 void writeDictionary(Dictionary* dico,char** wordsToInput,int sizeOfWords) {
@@ -147,14 +148,14 @@ void createDictionaryFromTxt(char* filePath, char* fileTxtName) {
     char ** listOfUniqueWord;
     int sizeOflistOfUniqueWord;
     printf("initialise la liste des mots uniques");
-    listOfUniqueWord = getUniqWordFromTxt(file, &sizeOflistOfUniqueWord); 
+    listOfUniqueWord = getUniqWordFromTxt(file, &sizeOflistOfUniqueWord);
     //TODO Fonction qui fait la liste des mots uniques. NOTE: retourner la taille de la liste
     /*printf("SIZE: %d\n", sizeOflistOfUniqueWord);
     for (int i = 0; i < sizeOflistOfUniqueWord; ++i) {
         printf("----> %s\n", listOfUniqueWord[i]);
     }
-    
-    dictionary.length = sizeOflistOfUniqueWord; Taille de la liste 
+
+    dictionary.length = sizeOflistOfUniqueWord; Taille de la liste
     dictionary.lengthPerLine = malloc(dictionary.length * sizeof(int));
     dictionary.fileContent = malloc(dictionary.length * sizeof(char *));
     for (int idx = 0; idx < dictionary.length; idx ++) {
@@ -263,7 +264,7 @@ char** getAllWordFromTxt(FILE* text, int* sizeOfAllWord){
 
 int getSizeOfThisFile(FILE* file){
 	int resultat;
-	fseek(file, 0, SEEK_END);	
+	fseek(file, 0, SEEK_END);
 	resultat = ftell(file) + 1;
 	rewind(file);
 
@@ -271,9 +272,9 @@ int getSizeOfThisFile(FILE* file){
 }
 
 void printDictionary(Dictionary dictionary) {
-    printf("Number of words: %d\n", dictionary.length);
-    for (int idx = 0; idx < dictionary.length; ++idx) {
-        printf("%d(%d): %s\n", idx + 1, dictionary.lengthOfEachWord[idx], dictionary.words[idx]);
-    }
+  int idx;
+  printf("Number of words: %d\n", dictionary.length);
+  for (idx = 0; idx < dictionary.length; ++idx) {
+      printf("%d(%d): %s\n", idx + 1, dictionary.lengthOfEachWord[idx], dictionary.words[idx]);
+  }
 }
-

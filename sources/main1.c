@@ -13,11 +13,15 @@
 #include "cmdLineParser.h"
 
 int main(int argCount, char* argList[]) {
-    //parseCMDLine(argCount, argList);
-    char* theDictionnary = "aDictionnary";
+  //parseCMDLine(argCount, argList);
+  char* theDictionnary = "aDictionnary";
+  int textSize = 3;
+  char* text[] = {"oyoy", "toto", "tata"};
 	FILE* file = fopen("test", "r");
-	Dictionary* myDict = newDictionaryWithTitle(theDictionnary);
+	Dictionary* myDict = createDictionary(theDictionnary);
+  writeDictionary(myDict, text, textSize);
 	printf("%s",myDict->title);
+  destroyDictionary(myDict);
 	fclose(file);
 	return 0;
 };
