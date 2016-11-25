@@ -1,3 +1,12 @@
+/*
+**Filename: gestrech.h
+**
+**Made by : Baugue Florian
+**
+**Description : Partie 2 du dictionnary
+**
+*/
+
 void searchSimilarWords();// programme controle
 
 
