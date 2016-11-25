@@ -36,7 +36,7 @@ void writeDictionary(Dictionary* dico,char** wordsToInput,int sizeOfWords);
  * Function which aim to create a dictionary from a text file
  * @param fileTxtName The text file which will be used to create a dictionary
  */
-void createDictionaryFromTxt(char* filePath, char* fileTxtName);
+void createDictionaryFromTxt(char* filePath, FILE* file);
 /**
  * Function wich aim to destroy the dictionary representated by its @param filename
  * @param filename The filename which represent the dictionary
@@ -58,4 +58,7 @@ void printDictionary(Dictionary);
 
 char** getUniqWordFromTxt(FILE* text,int* sizeOfTable);
 char** getAllWordFromTxt(FILE* text, int* sizeOfAllWord);
+char** splitSentence(char* sentence,int sizeOfSentence,int* sizeOfAllWord, char splitter);
+
 int getSizeOfThisFile(FILE* file);
+FILE* openFileRead(char*filename);

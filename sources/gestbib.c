@@ -17,11 +17,11 @@
 //Dictionnaire de 10 000 mots par défaut
 Dictionary* newDictionary() {
     Dictionary* dico = malloc(sizeof(Dictionary));//{0, {0}, {""}};
-
+    int defaultSize = 10000;
     dico->title = "default dictionnary";
     dico->length = 0;
-    dico->lengthOfEachWord = malloc(sizeof(int) * 10000);
-    dico->words = malloc(sizeof(char*) * 10000);
+    dico->lengthOfEachWord = malloc(sizeof(int) * defaultSize);
+    dico->words = malloc(sizeof(char*) * defaultSize);
 
     FILE * file = fopen(dico->title, "w");
     fputs("/***** Dictionary *****/\n", file);
@@ -32,11 +32,11 @@ Dictionary* newDictionary() {
 
 Dictionary* newDictionaryWithTitle(char* title) {
     Dictionary* dico = malloc(sizeof(Dictionary));//{0, {0}, {""}};
-
+    int defaultSize = 10000;
     dico->title = title;
     dico->length = 0;
-    dico->lengthOfEachWord = malloc(sizeof(int) * 10000);
-    dico->words = malloc(sizeof(char*) * 10000);
+    dico->lengthOfEachWord = malloc(sizeof(int) * defaultSize);
+    dico->words = malloc(sizeof(char*) * defaultSize);
 
  	FILE * file = fopen(dico->title, "w");
     fputs("/***** Dictionary *****/\n", file);
@@ -63,11 +63,12 @@ Dictionary* newDictionaryWithTitleAndMax(char* title, int maxWords)
 
 Dictionary* useDictionary(char* title)    //synchroniser les éléments de la structure
 {
-	Dictionary* dico = malloc(sizeof(Dictionary));//{0, {0}, {""}};
+	Dictionary* dico = malloc(sizeof(Dictionary));
+  int defaultSize = 10000;
   dico->title = title;
   dico->length = 0;
-  dico->lengthOfEachWord = malloc(sizeof(int) * 10000);
-  dico->words = malloc(sizeof(char*) * 10000);
+  dico->lengthOfEachWord = malloc(sizeof(int) * defaultSize);
+  dico->words = malloc(sizeof(char*) * defaultSize);
 
 	return dico;
 }
@@ -135,14 +136,8 @@ void writeDictionary(Dictionary* dico,char** wordsToInput,int sizeOfWords) {
     fclose(file);
 }
 
+void createDictionaryFromTxt(char* filePath, FILE* file) {
 
-void createDictionaryFromTxt(char* filePath, char* fileTxtName) {
-	FILE* file = fopen(fileTxtName, "r");
-    if(file == NULL) {
-        fclose(file);
-        printf("Text file not found or unreachable!");
-        return ;
-	}
     Dictionary* dictionary = newDictionaryWithTitle(filePath);
 
     char ** listOfUniqueWord;
@@ -165,7 +160,6 @@ void createDictionaryFromTxt(char* filePath, char* fileTxtName) {
     fclose(file);
     printf("passe dans cette fonction");
 }
-
 
 int searchWord(char* filename, char* word) {
 	FILE* file = fopen(filename, "r");
@@ -197,13 +191,12 @@ int searchWord(char* filename, char* word) {
 }
 
 char** getUniqWordFromTxt(FILE* text,int* sizeOfTable){
-	int sizeOfAllWordFromText = 0;
-	int* ptrSizeOfAllWordFromText = &sizeOfAllWordFromText;
+	int sizeOfAllWordFromText = 10000;
 
-	char** allWordsFromText = getAllWordFromTxt(text,ptrSizeOfAllWordFromText);
+	char** allWordsFromText = getAllWordFromTxt(text, &sizeOfAllWordFromText);
 	char** uniqWords = malloc(sizeof(char*) * sizeOfAllWordFromText);
 	uniqWords[0] = allWordsFromText[0];
-	int sizeUniqWords = 1;
+	/*int sizeUniqWords = 1;
 	int i,j;
 
 	for(i = 1; i < sizeOfAllWordFromText; i++){
@@ -222,44 +215,52 @@ char** getUniqWordFromTxt(FILE* text,int* sizeOfTable){
 		}
 	}
 
-	*sizeOfTable = sizeUniqWords;
+	*sizeOfTable = sizeUniqWords;*/
 	return uniqWords;
 }
 
 char** getAllWordFromTxt(FILE* text, int* sizeOfAllWord){
-	int bufferOfWord = 64;
-	char** allWord = malloc(sizeof(char*) * bufferOfWord);
-	int counterAllWords = 0;
-	int counterBuffer = 0;
 
-	int sizeOfFile = getSizeOfThisFile(text);
-	char bufferOfText[sizeOfFile];
-	fgets(bufferOfText, sizeOfFile, text);
+  int sizeOfText = getSizeOfThisFile(text);
+	char bufferOfText[sizeOfText];
+	fgets(bufferOfText, sizeOfText, text);
 
-	printf("%s",bufferOfText);
+	//printf("%s",bufferOfText);
 	char space = ' ';
-	int counterText;
-	int counterThisWord;
-	for(counterText = 0; counterText < sizeOfFile; counterText++)
+
+  char** allWord = splitSentence(bufferOfText, sizeOfText, sizeOfAllWord, space);
+
+	return allWord;
+}
+
+char** splitSentence(char* sentence,int sizeOfSentence,int* sizeOfAllWord, char splitter)
+{
+  int counterOfWords = 0;
+
+  char** allWord = malloc(sizeof(char*) * 10000);
+  int i;
+  for(i = 0; i < 10000; i++)
+    allWord[i] = malloc(sizeof(char) * 64);
+
+  int counterSentence;
+	int counterThisWord = 0;
+	for(counterSentence = 0; counterSentence < sizeOfSentence; counterSentence++)
 	{
-		char* thisWord[bufferOfWord];
-		if(bufferOfText[counterText] == space)
+		if(sentence[counterSentence] == splitter)
 		{
-			thisWord[counterThisWord] = '\0';
+			allWord[counterOfWords][counterThisWord] = '\0';
 			counterThisWord = 0;
-			allWord[counterAllWords] = thisWord;
-			counterAllWords++;
+
+			counterOfWords++;
+      printf("word %d = %c\n", counterOfWords, allWord[counterOfWords][counterThisWord]);
 		}
 		else
 		{
-			thisWord[counterThisWord] = bufferOfText[counterText];
+			allWord[counterOfWords][counterThisWord] = sentence[counterSentence];
 			counterThisWord++;
 		}
 	}
-
-	*sizeOfAllWord = counterAllWords;
-	return allWord;
-
+  return allWord;
 }
 
 int getSizeOfThisFile(FILE* file){
