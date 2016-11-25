@@ -11,7 +11,7 @@
 #include <memory.h>
 #include <unistd.h>
 #include <stdbool.h>
-
+/*
 int calculateSeuilBetween(char* this, char* that);
 char** advanceSearch(char* word,char** listOfCommonWord,int sizeOfListOfCommonWord,int* sizeOfSimilarWord,int myMaxSeuil);
 void showSearchOf(char* word);
@@ -41,7 +41,7 @@ char** advanceSearch(char* word,char** listOfCommonWord,int sizeOfListOfCommonWo
 	for(i = 0; i < sizeOfListOfCommonWord; i++)
 	{
 		int seuil = calculateSeuilBetween(listOfCommonWord[i], word)
-		int isItSimilar = myMaxSeuil > seuil; 
+		int isItSimilar = myMaxSeuil > seuil;
 		printf(isItSimilar);
 		if(isItSimilar == 0)//a vérifier si c'est 0 ou 1;
 		{
@@ -64,4 +64,25 @@ int calculateSeuilBetween(char* this, char* that)
 			seuil++;
 	}
 	return seuil;
+}
+*/
+
+void searchSimilarWords()// programme controle
+{
+
+}
+
+void showSimilarWords()// afficher les resultats
+{
+
+}
+
+void testSeuilSimilarWords()// trie les mots selon leur seuil de similarité
+{
+
+}
+
+void downloadListWords()// charge la liste des mots dans un ou plusieurs dictionnaire(s)
+{
+
 }
