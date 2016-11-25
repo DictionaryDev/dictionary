@@ -71,8 +71,8 @@ int calculateSeuilBetween(char* this, char* that)
 void searchSimilarWords(char* wordUse)// programme controle
 {
     printf("%s", wordUse);
-    char totalList[][] = char[500][100];
-    totalList = downloadListWords();
+ /*   char totalList[][] = char[500][100];
+    totalList = downloadListWords();*/
 
 }
 
@@ -85,7 +85,7 @@ void testSeuilSimilarWords()// trie les mots selon leur seuil de similarité
 {
 
 }
-
+/*
 char[][] downloadListWords()// charge la liste des mots dans un ou plusieurs dictionnaire(s)
 {
     char totalList[][] = new char[500][100];
@@ -105,3 +105,4 @@ char[][] imitationListWords()
     totalList[6] = "tdac";
     return totalList;
 }
+*/
