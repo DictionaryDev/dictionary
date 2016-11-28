@@ -1,6 +1,5 @@
 #include <stdbool.h>
-#include <stdio.h>
-
+#include "utility.h"
 #define DICTIONARY_HEADER "/***** Dictionary *****/"
 
 struct Dictionary {
@@ -12,15 +11,28 @@ struct Dictionary {
 };
 typedef struct Dictionary Dictionary;
 /*
-	Constructor of the Dictionnary
+	Default Constructor of the Dictionnary
 */
 Dictionary* newDictionary();
+
+/*
+	Constructor of the Dictionnary giving his title
+*/
 Dictionary* newDictionaryWithTitle(char* title);
+
+/*
+	Constructor of the Dictionnary giving his title and maximun capacity
+*/
 Dictionary* newDictionaryWithTitleAndMax(char* title, int maxWords);
 
+/*
+	use existing dictionary based on his title
+*/
+Dictionary* useDictionary(char* title);
+
 /**
- * Function which aime to create a file dictionary.
- * return a dictionnary with the path as title
+ * Function creating or using a dictionary a file dictionary based of if he exist or not
+ * return a dictionnary
  * @param filename The file which will be created
  */
 Dictionary* createDictionary(char *filePath);
@@ -30,6 +42,9 @@ Dictionary* createDictionary(char *filePath);
 */
 bool isADictionary(char * filename);
 
+/*
+	write a table of characters into a dictionary
+*/
 void writeDictionary(Dictionary* dico,char** wordsToInput,int sizeOfWords);
 
 /**
@@ -37,28 +52,17 @@ void writeDictionary(Dictionary* dico,char** wordsToInput,int sizeOfWords);
  * @param fileTxtName The text file which will be used to create a dictionary
  */
 void createDictionaryFromTxt(char* filePath, FILE* file);
-/**
- * Function wich aim to destroy the dictionary representated by its @param filename
- * @param filename The filename which represent the dictionary
- */
-void destroyDictionary(Dictionary* dico);
-Dictionary* useDictionary(char* title);
+
+/*
+	The dictionnary is stopped being used in the program
+*/
 void stopUseDictionnary(Dictionary* dictionary);
 
 /**
- * Function which aim to search a word into a dictionary representated by its @param filename
+ * both the inmemory dictionary and file dictionnary are destroyed
  * @param filename The filename which represent the dictionary
- * @param word The word to search
- * @return 0 if the word doesn't exist, 1 if the word exist
  */
-int searchWord(char* filename, char* word);
+void destroyDictionary(Dictionary* dico);
 
 
 void printDictionary(Dictionary);
-
-char** getUniqWordFromTxt(FILE* text,int* sizeOfTable);
-char** getAllWordFromTxt(FILE* text, int* sizeOfAllWord);
-char** splitSentence(char* sentence,int sizeOfSentence,int* sizeOfAllWord, char splitter);
-
-int getSizeOfThisFile(FILE* file);
-FILE* openFileRead(char*filename);
