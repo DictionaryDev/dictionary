@@ -21,12 +21,15 @@ int main(int argCount, char* argList[]) {
   int sizeOfFile = getSizeOfThisFile(file);
   printf("taille du fichier text :%d\n",sizeOfFile);
 
-  int wordsLength[10] = {0};
-  char** allWordOfThex = getAllWordFromTxt(file, wordsLength);
+  int* wordsLength;
+  int sizeOfWordsLength;
+  char** allWordOfThex = getAllWordFromTxt(file, &sizeOfWordsLength, wordsLength);
+  printf("size : %d\n", sizeOfWordsLength);
+
   Dictionary* myDict = createDictionary(theDictionnary);
   writeDictionary(myDict, text, textSize);
-  printDictionary(*myDict);
-	printf("%s",myDict->title);
+  //printDictionary(*myDict);
+	//printf("%s",myDict->title);
   destroyDictionary(myDict);
 	fclose(file);
 	return 0;

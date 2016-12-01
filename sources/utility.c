@@ -40,9 +40,9 @@ int searchWord(char* filename, char* word) {
 char** getUniqWordFromTxt(FILE* text,int* sizeOfTable){
 	int sizeOfAllWordFromText = 10000;
 
-	char** allWordsFromText = getAllWordFromTxt(text, &sizeOfAllWordFromText);
+	//char** allWordsFromText = getAllWordFromTxt(text, &sizeOfAllWordFromText);
 	char** uniqWords = malloc(sizeof(char*) * sizeOfAllWordFromText);
-	uniqWords[0] = allWordsFromText[0];
+	//uniqWords[0] = allWordsFromText[0];
 	/*int sizeUniqWords = 1;
 	int i,j;
 
@@ -66,49 +66,27 @@ char** getUniqWordFromTxt(FILE* text,int* sizeOfTable){
 	return uniqWords;
 }
 
-char** getAllWordFromTxt(FILE* text, int* sizeOfAllWord){
+
+//imparfait, il faut faire un splitter basé sur une regex(partie4)
+char** getAllWordFromTxt(FILE* text, int* sizeOfTableWord, int* sizeOfEachWords){
 
   int sizeOfText = getSizeOfThisFile(text);
-	char bufferOfText[sizeOfText];
-	fgets(bufferOfText, sizeOfText, text);
 
-	//printf("%s",bufferOfText);
-	char space = ' ';
+	int sizeOfSizes;//a retourner plus haut
+ 	int* sizes = getSizeOfEachWordOfTxtFile(text, &sizeOfSizes);
+	sizeOfEachWords = sizes;
+	*sizeOfTableWord = sizeOfSizes;
 
-  char** allWord = splitSentence(bufferOfText, sizeOfText, sizeOfAllWord, space);
+	int i;
+	char** allWord = malloc(sizeof(char*) * (sizeOfSizes));
+	for (i = 0; ftell(text) < sizeOfText - 1;	i++)
+	{
+		allWord[i] = malloc(sizeof(char) * sizes[i]);
+		fscanf(text,"%s ",allWord[i]);
+	}
+	rewind(text);
 
 	return allWord;
-}
-
-char** splitSentence(char* sentence,int sizeOfSentence,int* sizeOfAllWord, char splitter)
-{
-  int counterOfWords = 0;
-
-  char** allWord = malloc(sizeof(char*) * 10000);
-  char* word = malloc(sizeof(char) * 10000 * 20);
-  int i;
-  for(i = 0; i < 10000; i++)
-    allWord[i] = &word[i * 20];
-
-  int counterSentence;
-	int counterThisWord = 0;
-	for(counterSentence = 0; counterSentence < sizeOfSentence; counterSentence++)
-	{
-		if(sentence[counterSentence] == splitter)
-		{
-			allWord[counterOfWords][counterThisWord] = '\0';
-			counterThisWord = 0;
-
-			counterOfWords++;
-      printf("word %d = %c\n", counterOfWords, allWord[counterOfWords][counterThisWord]);
-		}
-		else
-		{
-			allWord[counterOfWords][counterThisWord] = sentence[counterSentence];
-			counterThisWord++;
-		}
-	}
-  return allWord;
 }
 
 int getSizeOfThisFile(FILE* file){
@@ -118,4 +96,32 @@ int getSizeOfThisFile(FILE* file){
 	rewind(file);
 
 	return resultat;
+}
+
+int* getSizeOfEachWordOfTxtFile(FILE* text, int* size)
+{
+	int i;
+	char buffer[60];
+	int sizeOfText = getSizeOfThisFile(text);
+	for (i = 0; ftell(text) < sizeOfText - 1;	i++)
+	{
+		fscanf(text,"%s ",buffer);
+	}
+	*size = i;
+	rewind(text);
+
+	int taille;
+	int precTell = 0;
+	int* lenghtOfEachWord = malloc(sizeof(int) * (*size));
+	for (i = 0; ftell(text) < sizeOfText - 1;	i++)
+	{
+		fscanf(text, "%s ", buffer);
+		taille = ftell(text) - precTell;
+		precTell = ftell(text);
+		lenghtOfEachWord[i] = taille;
+		//printf("%d %d|%s ",ftell(text) ,lenghtOfEachWord[i] , buffer);
+	}
+	rewind(text);
+
+	return lenghtOfEachWord;
 }
