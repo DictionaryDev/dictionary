@@ -70,32 +70,53 @@ int calculateSeuilBetween(char* this, char* that)
 
 void searchSimilarWords(char* wordUse)// programme controle
 {
-    printf("%s", wordUse);
- /*   char totalList[][] = char[500][100];
-    totalList = downloadListWords();*/
-
+    char** totalList;
+    char** affinedList;
+    totalList = downloadListWords();
+    affinedList = testSeuilSimilarWords(totalList, wordUse);
 }
 
-void showSimilarWords()// afficher les resultats
+void showSimilarWords(char** affinedList)// afficher les resultats
 {
 
 }
 
-void testSeuilSimilarWords()// trie les mots selon leur seuil de similarité
+char** testSeuilSimilarWords(char** totalList, char* wordUse)// trie les mots selon leur seuil de similarité
 {
+    char** affinedList;
+    int i = 0;
+    int count = 0;
+    for (i = 0 ; i < 10 ; i++)
+    {
+        if (countDiff(totalList[i], wordUse) < 2)
+        {
+            affinedList[count] = totalList[i];
+        }
+    }
+    return affinedList;
 
 }
-/*
-char[][] downloadListWords()// charge la liste des mots dans un ou plusieurs dictionnaire(s)
+
+int countDiff(char* wordExam, char* wordUse)
 {
-    char totalList[][] = new char[500][100];
-    totalList = imitationListWords();
+    int diff = 0;
+    if (sizeof wordUse !=sizeof wordExam)
+        diff = 10;
+    return diff;
+}
+
+char** downloadListWords()// charge la liste des mots dans un ou plusieurs dictionnaire(s)
+{
+    char** totalList;
+    printf("Ici ca marche");
+    //totalList = imitationListWords();// Error Unknown
+    printf("Ici ca merde...");
     return totalList;
 }
 
-char[][] imitationListWords()
+char** imitationListWords()
 {
-    char totalList[][] = new char[500][100];
+    char** totalList;
     totalList[0] = "trac";
     totalList[1] = "troc";
     totalList[2] = "tric";
@@ -103,6 +124,9 @@ char[][] imitationListWords()
     totalList[4] = "tsuc";
     totalList[5] = "tduc";
     totalList[6] = "tdac";
+    totalList[7] = "tru";
+    totalList[8] = "ruc";
+    totalList[9] = "chose";
     return totalList;
 }
-*/
+
