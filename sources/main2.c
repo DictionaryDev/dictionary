@@ -14,8 +14,11 @@
 int main()
 {
     char wordUse[256];
+    int seuil = 1;// seuil vaut 1 par default
     printf("indiquez le mot a examiner...\n");
     scanf("%s", &wordUse);
-    searchSimilarWords(wordUse);
+    printf("indiquez le nombre de differences tolerees...\n");
+    scanf("%d", seuil);
+    searchSimilarWords(wordUse, seuil);
     return 0;
 }

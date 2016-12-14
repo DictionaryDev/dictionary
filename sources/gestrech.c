@@ -13,13 +13,13 @@
 #include <stdbool.h>
 #include "gestrech.h"
 
-void searchSimilarWords(char* wordUse)// programme controle
+void searchSimilarWords(char* wordUse, int seuil)// programme controle
 {
     int count = 0;
     char** totalList = malloc(sizeof(char*) * 500);
     char** affinedList = malloc(sizeof(char*) * 500);
     totalList = downloadListWords(totalList);
-    affinedList = testSeuilSimilarWords(affinedList, totalList, wordUse, &count);
+    affinedList = testSeuilSimilarWords(affinedList, totalList, wordUse, &count, seuil);
     free(totalList);
     showSimilarWords(affinedList, count);
     free(affinedList);
@@ -34,19 +34,18 @@ void showSimilarWords(char** affinedList, int count)// afficher les resultats
     }
 }
 
-char** testSeuilSimilarWords(char** affinedList,char** totalList, char* wordUse, int *count)// trie les mots selon leur seuil de similarité (par defaut 1 erreur tolérée)
+char** testSeuilSimilarWords(char** affinedList,char** totalList, char* wordUse, int *count, int seuil)// trie les mots selon leur seuil de similarité (par defaut 1 erreur tolérée)
 {
     int i = 0;
     for (i = 0 ; i < 10 ; i++)
     {
-        if (countDiff(totalList[i], wordUse) < 2)
+        if (countDiff(totalList[i], wordUse) < seuil+1)
         {
             affinedList[*count] = totalList[i];
             *count = *count + 1;
         }
     }
     return affinedList;
-
 }
 
 int countDiff(char* wordExam, char* wordUse)// compte le nombre de differences entre les mots (a affiner)
