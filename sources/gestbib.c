@@ -81,12 +81,8 @@ Dictionary* useDictionary(char* title){
   dico->words = malloc(sizeof(char*) * defaultSize);
   FILE* file = fopen(title, "r");
 
-  if(file != NULL && isADictionary(title)) {
-    dico->words = getAllWordFromTxt(file, &dico->length, dico->lengthOfEachWord);
-  }
-  else {
-    printf("this dictionary doesn't exist");
-  }
+  dico->words = getAllWordFromTxt(file, &dico->length, dico->lengthOfEachWord);
+
   fclose(file);
 	return dico;
 }
@@ -109,9 +105,8 @@ bool isADictionary(char* filename) {
     FILE* file = fopen(filename, "r");
     if(file != NULL)
     {
-      char* check = malloc(255 * sizeof(char));
-      fgets(check, 255, file);
-      printf("%s", check);
+      char* check = malloc(25 * sizeof(char));
+      fgets(check, 25, file);
       if (strcmp(check, DICTIONARY_HEADER) == 0) {
           fclose(file);
           return true;
@@ -139,7 +134,7 @@ void destroyDictionary(Dictionary* dictionary){
   }
 }
 
-void writeDictionary(Dictionary* dico,char** wordsToInput,int sizeOfWordsToInput) {
+void writeDictionary(Dictionary* dico,char** wordsToInput,int sizeOfWordsToInput){
    	int i;
    	FILE* file = fopen(dico->title, "a");
 

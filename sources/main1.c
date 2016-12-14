@@ -15,7 +15,7 @@
 
 int main(int argCount, char* argList[]) {
 
-  char* theDictionnary = "aDictionnary";
+  /*char* theDictionnary = "aDictionnary";
   int textSize = 3;
   char* text[] = {"oyoy", "tototto", "tata"};
 	FILE* file = fopen("test", "r");
@@ -36,6 +36,8 @@ int main(int argCount, char* argList[]) {
   printDictionary(*myDict);
 	printf("%s",myDict->title);
   destroyDictionary(myDict);
-	fclose(file);
+	fclose(file);*/
+
+  showHomeScreen();
 	return 0;
 };

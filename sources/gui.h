@@ -15,6 +15,9 @@ typedef enum DicoScreen{
 } DicoScreen;
 
 void showHomeScreen();
-void showDicoScreen(Dictionary* dico);
 void useHomeScreen();
+
+void showDicoScreen(Dictionary* dico);
 void useDicoScreen(Dictionary* dico);
+
+void insertMultipleWords(Dictionary* dico);

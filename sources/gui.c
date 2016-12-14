@@ -1,4 +1,5 @@
 #include "stdlib.h"
+#include "stdio.h"
 #include "gestbib.h"
 #include "gui.h"
 
@@ -7,45 +8,67 @@ void showHomeScreen()
 	system("clear");
 	printf("\nBonjour et bienvenue dans ce gestionnaire de dictionnaire\n");
 	printf("---------------------------------------------------------\n");
-	printf("1	-	Créer un dictionnaire\n");
-	printf("2	-	Utiliser un dictionnaire\n");
+	printf("1 - Créer un dictionnaire\n");
+	printf("2 - Utiliser un dictionnaire\n");
 	printf("3 - Détruire un dictionnaire\n");
 	printf("4 - Sortir du programme\n");
+  printf("---------------------------------------------------------\n\n");
+
 	useHomeScreen();
 }
 
 void useHomeScreen(){
-	HomeScreen command = HSnone;
+	HomeScreen command;
 	char* title = malloc(sizeof(char) * 50);
 	do{
-    scanf("%d\n", &command);
+    command = HSnone;
+    scanf("%d", &command);
+    fseek(stdin,0,SEEK_END);
 
 		if(command == createDico)
 		{
-			printf("veuillez rentrez le titre de votre dictionnaire :\n");
-      scanf("%s\n", title);
-      //vider le buffer
+			printf("Veuillez rentrez le titre de votre dictionnaire :\n");
+
+      scanf("%s", title);
+      fseek(stdin,0,SEEK_END);
+
 			createDictionary(title);
+      showHomeScreen();
 		}
 		else if(command == useDico)
 		{
-      printf("veuillez rentrez le titre de votre dictionnaire :\n");
-      scanf("%s\n", title);
-			Dictionary* dico = useDictionary(title);
-			showDicoScreen(dico);
+      printf("Veuillez rentrez le nom ou le chemin du dictionnaire :\n");
+      fseek(stdin,0,SEEK_END);
+      scanf("%s", title);
+      if(isADictionary(title) == true) {
+		      Dictionary* dico = useDictionary(title);
+          showDicoScreen(dico);
+      }
+      else
+      {
+          printf("Ce dictionnaire n'existe pas\n");
+          showHomeScreen();
+      }
 		}
 		else if(command == destroyDico)
 		{
-      printf("veuillez rentrez le titre de votre dictionnaire :\n");
-      scanf("%s\n", title);
+      printf("Veuillez rentrez le titre du dictionnaire à détruire.\n");
+      scanf("%s", title);
+      fseek(stdin,0,SEEK_END);
+
       Dictionary* dico = createDictionary(title);
       destroyDictionary(dico);
+      showHomeScreen();
       //doYouWantToSuprimScreen()*/
 		}
     else if(command == exitProg)
     {
       //printf("Êtes vous sur de vouloir le supprimer?(oui/non)");
       system("exit");
+    }
+    else
+    {
+      printf("veuillez choisir une commande existante.\n");
     }
 	}while(command > 4 && command < 1);
 }
@@ -59,33 +82,62 @@ void showDicoScreen(Dictionary* dico)
 	printf("2 - Ajouter les mots d'un texte\n");
 	printf("3 - Afficher les mots du dictionnaire\n");
 	printf("4 - Arrêter d'utiliser ce dictionnaire\n");
+  printf("---------------------------------------------------------\n\n");
+
+  useDicoScreen(dico);
 }
 
-void useDicoScreen(Dictionary* dico)
-{
+void useDicoScreen(Dictionary* dico){
   DicoScreen command = DSnone;
+
   do{
-    scanf("%d\n", &command);
+    fseek(stdin,0,SEEK_END);
+    scanf("%d", &command);
 
     if(command == addWords)
     {
-      printf("veuillez rentrez le titre de votre dictionnaire :\n");
-      //vider le buffer
+      printf("veuillez entrer les mots que vous voulez ajouter :\n");
+      insertMultipleWords(dico);
+
+      showDicoScreen(dico);
     }
     else if(command == addTexte)
     {
-      printf("veuillez rentrez le titre de votre dictionnaire :\n");
+      printf("veuillez rentrez le chemin ou le nom du fichier à ajouter au dictionnaire :\n");
       showDicoScreen(dico);
     }
     else if(command == printDico)
     {
-      printf("veuillez rentrez le titre de votre dictionnaire :\n");
-      //printf("Êtes vous sur de vouloir le supprimer?(oui/non)");
-      //doYouWantToSuprimScreen()*/
+      printDictionary(*dico);
+      showDicoScreen(dico);
     }
     else if(command == stopUseDico)
     {
-
+      stopUseDictionnary(dico);
+      showHomeScreen();
+    }
+    else{
+      printf("Veuillez entrer une vrai option");
     }
   }while(command > 4 && command < 1);
+}
+
+void insertMultipleWords(Dictionary* dico){
+  int i = 0;
+  int nbrOfWords;
+  printf("Combien de mots voulez-vous implémenter ?\n");
+  scanf("%d", &nbrOfWords);
+  fseek(stdin,0,SEEK_END);
+
+  char** words = malloc(sizeof(char*) * nbrOfWords);
+  do{
+    printf("mot numéro %d : ", i + 1);
+    words[i] = malloc(sizeof(char) * 64);
+    fseek(stdin,0,SEEK_END);
+    scanf("%s",words[i]);
+    i++;
+  }while(i < nbrOfWords);
+
+  writeDictionary(dico, words, nbrOfWords);
+  printf("Fin de saisie.\n");
 }
