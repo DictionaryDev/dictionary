@@ -34,7 +34,6 @@ int searchWord(char* filename, char* word) {
 	return isItInDictionnary;
 }
 
-//Ne fonctionne pas
 char** getUniqWordFromTxt(FILE* text, int* sizeOfTable, int* sizeOfEachWords){
 
 	int* wordsLength;
@@ -76,7 +75,6 @@ char** getUniqWordFromTxt(FILE* text, int* sizeOfTable, int* sizeOfEachWords){
 	return uniqWords;
 }
 
-//imparfait, il faut faire un splitter basé sur une regex(partie4)
 char** getAllWordFromTxt(FILE* text, int* sizeOfTableWord, int* sizeOfEachWords){
 
   int sizeOfText = getSizeOfThisFile(text);

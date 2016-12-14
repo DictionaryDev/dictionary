@@ -15,21 +15,9 @@
 
 int main(int argCount, char* argList[]) {
 
-  /*char* theDictionnary = "aDictionnary";
-  int textSize = 3;
-  char* text[] = {"oyoy", "tototto", "tata"};
-	FILE* file = fopen("test", "r");
-
-  int sizeOfFile = getSizeOfThisFile(file);
-  printf("taille du fichier text :%d\n",sizeOfFile);
-
-  int* wordsLength;
-  int sizeOfWordsLength;
-  char** allWordOfThex = getAllWordFromTxt(file, &sizeOfWordsLength, wordsLength);
+  /*
   printf("size : %d\n", sizeOfWordsLength);
 
-  printf("Création du dictionnaire\n");
-  Dictionary* myDict = createDictionaryFromTxt(file, theDictionnary);
 
   showDicoScreen(myDict);
   //writeDictionary(myDict, text, textSize);
@@ -41,3 +29,26 @@ int main(int argCount, char* argList[]) {
   showHomeScreen();
 	return 0;
 };
+
+void testCreateSimple()
+{
+  char* theDictionnary = "aDictionnary";
+  int textSize = 3;
+  char* text[] = {"oyoy", "tototto", "tata"};
+}
+
+void testLifeCycleFromFile()
+{
+  FILE* file = fopen("test", "r");
+  char* theDictionnary = "aDictionnary";
+
+  int sizeOfFile = getSizeOfThisFile(file);
+  printf("taille du fichier text :%d\n",sizeOfFile);
+
+  int* wordsLength;
+  int sizeOfWordsLength;
+  char** allWordOfThex = getAllWordFromTxt(file, &sizeOfWordsLength, wordsLength);
+
+  printf("Création du dictionnaire\n");
+  Dictionary* myDict = createDictionaryFromTxt(file, theDictionnary);
+}

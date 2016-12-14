@@ -61,11 +61,12 @@ bool isADictionary(char * filename);
 */
 void writeDictionary(Dictionary* dico,char** wordsToInput,int sizeOfWords);
 
-/**
- * Function which aim to create a dictionary from a text file
- * @param fileTxtName The text file which will be used to create a dictionary
+/*
+  Function which aim to create a dictionary from a text file
+ 	"file" the original text file
+  "dico" the name of the dictionnary
  */
-Dictionary* createDictionaryFromTxt(FILE* file, char* filePath);
+Dictionary* createDictionaryFromTxt(FILE* file, char* dico);
 
 /*
 	The dictionnary is stopped being used in the program

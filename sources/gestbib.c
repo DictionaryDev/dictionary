@@ -150,20 +150,15 @@ void writeDictionary(Dictionary* dico,char** wordsToInput,int sizeOfWordsToInput
     fclose(file);
 }
 
-Dictionary* createDictionaryFromTxt(FILE* file, char* filePath) {
+Dictionary* createDictionaryFromTxt(FILE* file, char* dico) {
 
     char** listOfUniqueWord;
     int sizeOflistOfUniqueWord;
     int* allSizeOfUniqWords;
-    //printf("initialise la liste des mots uniques");
-    listOfUniqueWord = getAllWordFromTxt(file, &sizeOflistOfUniqueWord, allSizeOfUniqWords);
-    //TODO Fonction qui fait la liste des mots uniques. NOTE: retourner la taille de la liste
-    /*printf("SIZE: %d\n", sizeOflistOfUniqueWord);
-    for (int i = 0; i < sizeOflistOfUniqueWord; ++i) {
-        printf("----> %s\n", listOfUniqueWord[i]);
-    }*/
 
-    Dictionary* dictionary = newDictionaryWithEverything(filePath, sizeOflistOfUniqueWord, listOfUniqueWord, allSizeOfUniqWords);
+    listOfUniqueWord = getAllWordFromTxt(file, &sizeOflistOfUniqueWord, allSizeOfUniqWords);
+
+    Dictionary* dictionary = newDictionaryWithEverything(dico, sizeOflistOfUniqueWord, listOfUniqueWord, allSizeOfUniqWords);
     fclose(file);
     return dictionary;
 }

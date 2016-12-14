@@ -1,17 +1,17 @@
  typedef enum HomeScreen{
   HSnone = 0,
   createDico = 1,
-  useDico = 2,
-  destroyDico = 3,
-  exitProg = 4
+  createDicoFromTxt = 2,
+  useDico = 3,
+  destroyDico = 4,
+  exitProg = 5
 } HomeScreen;
 
 typedef enum DicoScreen{
   DSnone = 0,
   addWords = 1,
-  addTexte = 2,
-  printDico = 3,
-  stopUseDico = 4,
+  printDico = 2,
+  stopUseDico = 3,
 } DicoScreen;
 
 void showHomeScreen();
