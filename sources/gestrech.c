@@ -70,27 +70,32 @@ int calculateSeuilBetween(char* this, char* that)
 
 void searchSimilarWords(char* wordUse)// programme controle
 {
-    char** totalList;
-    char** affinedList;
-    totalList = downloadListWords();
-    affinedList = testSeuilSimilarWords(totalList, wordUse);
-}
-
-void showSimilarWords(char** affinedList)// afficher les resultats
-{
-
-}
-
-char** testSeuilSimilarWords(char** totalList, char* wordUse)// trie les mots selon leur seuil de similarité
-{
-    char** affinedList;
-    int i = 0;
     int count = 0;
+    char** totalList = malloc(sizeof(char*) * 500);
+    char** affinedList = malloc(sizeof(char*) * 500);
+    totalList = downloadListWords(totalList);
+    affinedList = testSeuilSimilarWords(affinedList, totalList, wordUse, &count);
+    showSimilarWords(affinedList, count);
+}
+
+void showSimilarWords(char** affinedList, int count)// afficher les resultats
+{
+    int i = 0;
+    for (i = 0 ; i < count ; i++)
+    {
+        printf("%s\n", affinedList[i]);
+    }
+}
+
+char** testSeuilSimilarWords(char** affinedList,char** totalList, char* wordUse, int *count)// trie les mots selon leur seuil de similarité
+{
+    int i = 0;
     for (i = 0 ; i < 10 ; i++)
     {
         if (countDiff(totalList[i], wordUse) < 2)
         {
-            affinedList[count] = totalList[i];
+            affinedList[*count] = totalList[i];
+            *count = *count + 1;
         }
     }
     return affinedList;
@@ -100,23 +105,23 @@ char** testSeuilSimilarWords(char** totalList, char* wordUse)// trie les mots se
 int countDiff(char* wordExam, char* wordUse)
 {
     int diff = 0;
-    if (sizeof wordUse !=sizeof wordExam)
-        diff = 10;
+    int i = 0;
+    for (i = 0 ; i < 4 ; i++)
+    {
+        if (wordExam[i] != wordUse[i])
+            diff++;
+    }
     return diff;
 }
 
-char** downloadListWords()// charge la liste des mots dans un ou plusieurs dictionnaire(s)
+char** downloadListWords(char** totalList)// charge la liste des mots dans un ou plusieurs dictionnaire(s)
 {
-    char** totalList;
-    printf("Ici ca marche");
-    //totalList = imitationListWords();// Error Unknown
-    printf("Ici ca merde...");
+    totalList = imitationListWords(totalList);
     return totalList;
 }
 
-char** imitationListWords()
+char** imitationListWords(char** totalList)
 {
-    char** totalList;
     totalList[0] = "trac";
     totalList[1] = "troc";
     totalList[2] = "tric";
