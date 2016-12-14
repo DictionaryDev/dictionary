@@ -1,7 +1,7 @@
 /*
 **Filename: gestrech.c
 **
-**Made by : Baugue Florian
+**Made by : Baugue Florian, Fairfort Yohan
 **
 **Description : Partie 2 du dictionnary
 **
