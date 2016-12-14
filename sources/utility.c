@@ -1,13 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
 #include "utility.h"
+#include "gestbib.h"
 
-/**
- * Function which aim to search a word into a dictionary representated by its @param filename
- * @param filename The filename which represent the dictionary
- * @param word The word to search
- * @return 0 if the word doesn't exist, 1 if the word exist
- */
 int searchWord(char* filename, char* word) {
 	FILE* file = fopen(filename, "r");
 	int isItInDictionnary = 0;
@@ -37,42 +34,52 @@ int searchWord(char* filename, char* word) {
 	return isItInDictionnary;
 }
 
-char** getUniqWordFromTxt(FILE* text,int* sizeOfTable){
-	int sizeOfAllWordFromText = 10000;
+char** getUniqWordFromTxt(FILE* text, int* sizeOfTable, int* sizeOfEachWords){
 
-	//char** allWordsFromText = getAllWordFromTxt(text, &sizeOfAllWordFromText);
-	char** uniqWords = malloc(sizeof(char*) * sizeOfAllWordFromText);
-	//uniqWords[0] = allWordsFromText[0];
-	/*int sizeUniqWords = 1;
+	int* wordsLength;
+	int sizeOfWordsLength;
+	printf("GotText");
+
+	char** allWordsFromText = getAllWordFromTxt(text, &sizeOfWordsLength, wordsLength);
+
+	int* uniqWordsLength = malloc(sizeof(int) * sizeOfWordsLength);
+	char** uniqWords = malloc(sizeof(char*) * sizeOfWordsLength);
+
+	uniqWords[0] = allWordsFromText[0];
+	int sizeUniqWords = 1;
 	int i,j;
+	printf("Commencement Uniq");
 
-	for(i = 1; i < sizeOfAllWordFromText; i++){
-		int flag = 0;
+	for(i = 1; i < sizeOfWordsLength; i++){
+		bool flag = false;
 		for(j = 0; j < sizeUniqWords; j++){
-			if(strcmp(allWordsFromText[i],uniqWords[j]) == 0)
+			if(strcmp(allWordsFromText[i], uniqWords[j]) == 0)
 			{
-				flag = 1;
+				flag = true;
+				printf("%s ", allWordsFromText[i]);
 				break;
 			}
 		}
-		if(flag == 0)
+
+		if(flag == false)
 		{
+			uniqWords[sizeUniqWords - 1] = malloc(sizeof(char) * wordsLength[i]);
+			uniqWordsLength[sizeUniqWords - 1] = wordsLength[i];
 			uniqWords[sizeUniqWords - 1] = allWordsFromText[i];
 			sizeUniqWords++;
 		}
 	}
 
-	*sizeOfTable = sizeUniqWords;*/
+	sizeOfEachWords = uniqWordsLength;
+	*sizeOfTable = sizeUniqWords;
 	return uniqWords;
 }
 
-
-//imparfait, il faut faire un splitter basé sur une regex(partie4)
 char** getAllWordFromTxt(FILE* text, int* sizeOfTableWord, int* sizeOfEachWords){
 
   int sizeOfText = getSizeOfThisFile(text);
 
-	int sizeOfSizes;//a retourner plus haut
+	int sizeOfSizes;
  	int* sizes = getSizeOfEachWordOfTxtFile(text, &sizeOfSizes);
 	sizeOfEachWords = sizes;
 	*sizeOfTableWord = sizeOfSizes;
@@ -98,8 +105,7 @@ int getSizeOfThisFile(FILE* file){
 	return resultat;
 }
 
-int* getSizeOfEachWordOfTxtFile(FILE* text, int* size)
-{
+int* getSizeOfEachWordOfTxtFile(FILE* text, int* size){
 	int i;
 	char buffer[60];
 	int sizeOfText = getSizeOfThisFile(text);
@@ -119,7 +125,7 @@ int* getSizeOfEachWordOfTxtFile(FILE* text, int* size)
 		taille = ftell(text) - precTell;
 		precTell = ftell(text);
 		lenghtOfEachWord[i] = taille;
-		//printf("%d %d|%s ",ftell(text) ,lenghtOfEachWord[i] , buffer);
+		//printf("%ld %d|%s ",ftell(text) ,lenghtOfEachWord[i] , buffer);
 	}
 	rewind(text);
 

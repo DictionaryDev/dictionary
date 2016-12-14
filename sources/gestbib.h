@@ -3,27 +3,41 @@
 #define DICTIONARY_HEADER "/***** Dictionary *****/"
 
 struct Dictionary {
-
 	char* title;
-    int length;
-    int* lengthOfEachWord;
-    char** words;
+	int length;
+	int* lengthOfEachWord;
+	char** words;
 };
 typedef struct Dictionary Dictionary;
 /*
 	Default Constructor of the Dictionnary
+	- a title "default Dictionary"
+	-a default capacity of 9000
 */
 Dictionary* newDictionary();
 
 /*
-	Constructor of the Dictionnary giving his title
+	Constructor of the Dictionnary giving :
+	- his title
+	- a default capacity of 9000
 */
 Dictionary* newDictionaryWithTitle(char* title);
 
 /*
-	Constructor of the Dictionnary giving his title and maximun capacity
+	Constructor of the Dictionnary giving :
+	- his title
+	- his maximun capacity
 */
 Dictionary* newDictionaryWithTitleAndMax(char* title, int maxWords);
+
+/*
+	Constructor of the Dictionary giving his :
+	- title
+	- his real length
+	- his words
+	- the length of each words
+*/
+Dictionary* newDictionaryWithEverything(char* title, int length, char** words, int* wordsLength);
 
 /*
 	use existing dictionary based on his title
@@ -47,11 +61,12 @@ bool isADictionary(char * filename);
 */
 void writeDictionary(Dictionary* dico,char** wordsToInput,int sizeOfWords);
 
-/**
- * Function which aim to create a dictionary from a text file
- * @param fileTxtName The text file which will be used to create a dictionary
+/*
+  Function which aim to create a dictionary from a text file
+ 	"file" the original text file
+  "dico" the name of the dictionnary
  */
-void createDictionaryFromTxt(char* filePath, FILE* file);
+Dictionary* createDictionaryFromTxt(FILE* file, char* dico);
 
 /*
 	The dictionnary is stopped being used in the program
@@ -64,5 +79,7 @@ void stopUseDictionnary(Dictionary* dictionary);
  */
 void destroyDictionary(Dictionary* dico);
 
-
+/*
+	print all the word of dictionary
+*/
 void printDictionary(Dictionary);

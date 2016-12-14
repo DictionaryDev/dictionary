@@ -10,13 +10,37 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "gestbib.h"
+#include "utility.h"
+#include "gui.h"
 
 int main(int argCount, char* argList[]) {
-  //parseCMDLine(argCount, argList);
+
+  /*
+  printf("size : %d\n", sizeOfWordsLength);
+
+
+  showDicoScreen(myDict);
+  //writeDictionary(myDict, text, textSize);
+  printDictionary(*myDict);
+	printf("%s",myDict->title);
+  destroyDictionary(myDict);
+	fclose(file);*/
+
+  showHomeScreen();
+	return 0;
+};
+
+void testCreateSimple()
+{
   char* theDictionnary = "aDictionnary";
   int textSize = 3;
   char* text[] = {"oyoy", "tototto", "tata"};
-	FILE* file = fopen("test", "r");
+}
+
+void testLifeCycleFromFile()
+{
+  FILE* file = fopen("test", "r");
+  char* theDictionnary = "aDictionnary";
 
   int sizeOfFile = getSizeOfThisFile(file);
   printf("taille du fichier text :%d\n",sizeOfFile);
@@ -24,13 +48,7 @@ int main(int argCount, char* argList[]) {
   int* wordsLength;
   int sizeOfWordsLength;
   char** allWordOfThex = getAllWordFromTxt(file, &sizeOfWordsLength, wordsLength);
-  printf("size : %d\n", sizeOfWordsLength);
 
-  Dictionary* myDict = createDictionary(theDictionnary);
-  writeDictionary(myDict, text, textSize);
-  //printDictionary(*myDict);
-	//printf("%s",myDict->title);
-  destroyDictionary(myDict);
-	fclose(file);
-	return 0;
-};
+  printf("Création du dictionnaire\n");
+  Dictionary* myDict = createDictionaryFromTxt(file, theDictionnary);
+}
