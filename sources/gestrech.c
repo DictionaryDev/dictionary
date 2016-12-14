@@ -1,7 +1,7 @@
 /*
 **Filename: gestrech.c
 **
-**Made by : Fairfort Yohan, Baugue Florian
+**Made by : Baugue Florian
 **
 **Description : Partie 2 du dictionnary
 **
@@ -12,61 +12,6 @@
 #include <unistd.h>
 #include <stdbool.h>
 #include "gestrech.h"
-/*
-int calculateSeuilBetween(char* this, char* that);
-char** advanceSearch(char* word,char** listOfCommonWord,int sizeOfListOfCommonWord,int* sizeOfSimilarWord,int myMaxSeuil);
-void showSearchOf(char* word);
-
-void showSearchOf(char* word)
-{
-	int sizeOfSimilarList;
-	int theMaxSeuilThatIWant = 3;
-	char** listOfWord;
-	int sizeOfListOfWord;
-	char** listOfSimilar(word, listOfWord, sizeOfListOfWord, &sizeOfSimilarList, theMaxSeuilThatIWant);
-
-	int i;
-	for(i = 0; i < sizeOfSimilarList; i++)
-	{
-		//afficher;
-		printf(listOfSimilar[i]);
-	}
-}
-
-char** advanceSearch(char* word,char** listOfCommonWord,int sizeOfListOfCommonWord,int* sizeOfSimilarWord,int myMaxSeuil)
-{
-	int i;
-	*sizeOfSimilarWord = 0;
-	char** listOfSimilarWord = malloc(sizeof(char*) * sizeOfListOfCommonWord);
-
-	for(i = 0; i < sizeOfListOfCommonWord; i++)
-	{
-		int seuil = calculateSeuilBetween(listOfCommonWord[i], word)
-		int isItSimilar = myMaxSeuil > seuil;
-		printf(isItSimilar);
-		if(isItSimilar == 0)//a vérifier si c'est 0 ou 1;
-		{
-			listOfSimilarWord[*sizeOfSimilarWord] = listOfCommonWord[i];
-			*sizeOfSimilarWord++;
-		}
-	}
-
-	return listOfSimilarWord;
-}
-
-int calculateSeuilBetween(char* this, char* that)
-{
-	int i;
-	int seuil;
-	int isItTHeEndOfThisOrThat = this[i] != '\0' || that[i] != '\0';
-	for(i = 0; isItTHeEndOfThisOrThat; i++)
-	{
-		if(this[i] == that[i])
-			seuil++;
-	}
-	return seuil;
-}
-*/
 
 void searchSimilarWords(char* wordUse)// programme controle
 {
@@ -75,7 +20,9 @@ void searchSimilarWords(char* wordUse)// programme controle
     char** affinedList = malloc(sizeof(char*) * 500);
     totalList = downloadListWords(totalList);
     affinedList = testSeuilSimilarWords(affinedList, totalList, wordUse, &count);
+    free(totalList);
     showSimilarWords(affinedList, count);
+    free(affinedList);
 }
 
 void showSimilarWords(char** affinedList, int count)// afficher les resultats
@@ -87,7 +34,7 @@ void showSimilarWords(char** affinedList, int count)// afficher les resultats
     }
 }
 
-char** testSeuilSimilarWords(char** affinedList,char** totalList, char* wordUse, int *count)// trie les mots selon leur seuil de similarité
+char** testSeuilSimilarWords(char** affinedList,char** totalList, char* wordUse, int *count)// trie les mots selon leur seuil de similarité (par defaut 1 erreur tolérée)
 {
     int i = 0;
     for (i = 0 ; i < 10 ; i++)
@@ -102,11 +49,11 @@ char** testSeuilSimilarWords(char** affinedList,char** totalList, char* wordUse,
 
 }
 
-int countDiff(char* wordExam, char* wordUse)
+int countDiff(char* wordExam, char* wordUse)// compte le nombre de differences entre les mots (a affiner)
 {
     int diff = 0;
     int i = 0;
-    for (i = 0 ; i < 4 ; i++)
+    for (i = 0 ; i < sizeof(wordUse) ; i++)
     {
         if (wordExam[i] != wordUse[i])
             diff++;
@@ -120,7 +67,7 @@ char** downloadListWords(char** totalList)// charge la liste des mots dans un ou
     return totalList;
 }
 
-char** imitationListWords(char** totalList)
+char** imitationListWords(char** totalList)// en attendant le fonctionnement de la partie 1...
 {
     totalList[0] = "trac";
     totalList[1] = "troc";
