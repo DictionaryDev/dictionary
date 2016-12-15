@@ -1,10 +1,10 @@
 #include <stdio.h>
 
-/**
- * Function which aim to search a word into a dictionary representated by its @param filename
- * @param filename The filename which represent the dictionary
- * @param word The word to search
- * @return 0 if the word doesn't exist, 1 if the word exist
+/*
+  Function which aim to search a word into a dictionary representated by its @param filename
+  "filename" The filename which represent the dictionary
+  "word" The word to search
+   if the word doesn't exist, 1 if the word exist
  */
 int searchWord(char* filename, char* word);
 

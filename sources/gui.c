@@ -1,10 +1,18 @@
+/*
+**Filename: gui.c
+**
+**Made by : Fairfort Yohan ,Baugue Florian
+**
+**Description : partie graphique de la partie 1 du dictionnary
+**
+*/
+
 #include "stdlib.h"
 #include "stdio.h"
 #include "gestbib.h"
 #include "gui.h"
 
-void showHomeScreen()
-{
+void showHomeScreen(){
 	system("clear");
 	printf("\nBonjour et bienvenue dans ce gestionnaire de dictionnaire\n");
 	printf("---------------------------------------------------------\n");
@@ -101,8 +109,7 @@ void useHomeScreen(){
 	}while(command > 4 && command < 1);
 }
 
-void showDicoScreen(Dictionary* dico)
-{
+void showDicoScreen(Dictionary* dico){
 	system("clear");
 	printf("\n%s\n",dico->title);
 	printf("---------------------------------------------------------\n");

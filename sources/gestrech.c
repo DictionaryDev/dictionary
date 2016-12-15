@@ -13,8 +13,7 @@
 #include <stdbool.h>
 #include "gestrech.h"
 
-void searchSimilarWords(char* wordUse, int seuil)// programme controle
-{
+void searchSimilarWords(char* wordUse, int seuil){
     int count = 0;
     char** totalList = malloc(sizeof(char*) * 500);
     char** affinedList = malloc(sizeof(char*) * 500);
@@ -25,8 +24,7 @@ void searchSimilarWords(char* wordUse, int seuil)// programme controle
     free(affinedList);
 }
 
-void showSimilarWords(char** affinedList, int count)// afficher les resultats
-{
+void showSimilarWords(char** affinedList, int count){
     int i = 0;
     for (i = 0 ; i < count ; i++)
     {
@@ -34,8 +32,7 @@ void showSimilarWords(char** affinedList, int count)// afficher les resultats
     }
 }
 
-char** testSeuilSimilarWords(char** affinedList,char** totalList, char* wordUse, int *count, int seuil)// trie les mots selon leur seuil de similarité (par defaut 1 erreur tolérée)
-{
+char** testSeuilSimilarWords(char** affinedList,char** totalList, char* wordUse, int *count, int seuil){
     int i = 0;
     for (i = 0 ; i < 10 ; i++)
     {
@@ -48,8 +45,7 @@ char** testSeuilSimilarWords(char** affinedList,char** totalList, char* wordUse,
     return affinedList;
 }
 
-int countDiff(char* wordExam, char* wordUse)// compte le nombre de differences entre les mots (a affiner)
-{
+int countDiff(char* wordExam, char* wordUse){
     int diff = 0;
     int i = 0;
     for (i = 0 ; i < sizeof(wordUse) ; i++)
@@ -60,14 +56,12 @@ int countDiff(char* wordExam, char* wordUse)// compte le nombre de differences e
     return diff;
 }
 
-char** downloadListWords(char** totalList)// charge la liste des mots dans un ou plusieurs dictionnaire(s)
-{
+char** downloadListWords(char** totalList){
     totalList = imitationListWords(totalList);
     return totalList;
 }
 
-char** imitationListWords(char** totalList)// en attendant le fonctionnement de la partie 1...
-{
+char** imitationListWords(char** totalList){
     totalList[0] = "trac";
     totalList[1] = "troc";
     totalList[2] = "tric";

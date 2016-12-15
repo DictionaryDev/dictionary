@@ -100,6 +100,18 @@ Dictionary* createDictionary(char* filePath) {
       return newDictionaryWithTitle(filePath);
     }
 }
+Dictionary* createDictionaryFromTxt(FILE* file, char* dico) {
+
+    char** listOfUniqueWord;
+    int sizeOflistOfUniqueWord;
+    int* allSizeOfUniqWords;
+
+    listOfUniqueWord = getAllWordFromTxt(file, &sizeOflistOfUniqueWord, allSizeOfUniqWords);
+
+    Dictionary* dictionary = newDictionaryWithEverything(dico, sizeOflistOfUniqueWord, listOfUniqueWord, allSizeOfUniqWords);
+    fclose(file);
+    return dictionary;
+}
 
 bool isADictionary(char* filename) {
     FILE* file = fopen(filename, "r");
@@ -125,7 +137,6 @@ void stopUseDictionnary(Dictionary* dictionary){
       free(dictionary->lengthOfEachWord);
       free(dictionary);
 }
-
 void destroyDictionary(Dictionary* dictionary){
   FILE* file = fopen(dictionary->title, "w+");
 	if(file != NULL && isADictionary(dictionary->title)) {
@@ -148,19 +159,6 @@ void writeDictionary(Dictionary* dico,char** wordsToInput,int sizeOfWordsToInput
    	dico->length = dico->length + sizeOfWordsToInput;
 
     fclose(file);
-}
-
-Dictionary* createDictionaryFromTxt(FILE* file, char* dico) {
-
-    char** listOfUniqueWord;
-    int sizeOflistOfUniqueWord;
-    int* allSizeOfUniqWords;
-
-    listOfUniqueWord = getAllWordFromTxt(file, &sizeOflistOfUniqueWord, allSizeOfUniqWords);
-
-    Dictionary* dictionary = newDictionaryWithEverything(dico, sizeOflistOfUniqueWord, listOfUniqueWord, allSizeOfUniqWords);
-    fclose(file);
-    return dictionary;
 }
 
 void printDictionary(Dictionary dictionary) {

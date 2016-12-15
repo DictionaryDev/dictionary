@@ -69,13 +69,13 @@ void writeDictionary(Dictionary* dico,char** wordsToInput,int sizeOfWords);
 Dictionary* createDictionaryFromTxt(FILE* file, char* dico);
 
 /*
-	The dictionnary is stopped being used in the program
+	The "dictionnary" is stopped being used in the program
 */
 void stopUseDictionnary(Dictionary* dictionary);
 
-/**
- * both the inmemory dictionary and file dictionnary are destroyed
- * @param filename The filename which represent the dictionary
+/*
+  both the inmemory dictionary and file dictionnary are destroyed
+  "dico" The dictionnary that get destroyed
  */
 void destroyDictionary(Dictionary* dico);
 

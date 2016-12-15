@@ -14,18 +14,6 @@
 #include "gui.h"
 
 int main(int argCount, char* argList[]) {
-
-  /*
-  printf("size : %d\n", sizeOfWordsLength);
-
-
-  showDicoScreen(myDict);
-  //writeDictionary(myDict, text, textSize);
-  printDictionary(*myDict);
-	printf("%s",myDict->title);
-  destroyDictionary(myDict);
-	fclose(file);*/
-
   showHomeScreen();
 	return 0;
 };
@@ -51,4 +39,9 @@ void testLifeCycleFromFile()
 
   printf("Création du dictionnaire\n");
   Dictionary* myDict = createDictionaryFromTxt(file, theDictionnary);
+  printDictionary(*myDict);
+  printf("%s",myDict->title);
+  destroyDictionary(myDict);
+  fclose(file);
+
 }
